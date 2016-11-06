@@ -32,7 +32,7 @@ class EventController():
 
     def do_download(self,event):
         downobj = DownloadApk()
-        android_url  = "http://30.96.68.173/youku/android/"
+        android_url  = ""
         branch_versions = downobj.get_android_branch_verisons(android_url)
         if branch_versions is None or len(branch_versions) <0:
             return
@@ -49,7 +49,7 @@ class EventController():
             forgeturlcontent = downobj.download_html(forgeturl)
             if forgeturlcontent is None:
                 return
-            #ĞŞ¸ÄÌí¼ÓÊ±¼äÌáÊ¾
+            #ä¿®æ”¹æ·»åŠ æ—¶é—´æç¤º
             apk_urls,apk_times = downobj.get_apk_link_urls(forgeturlcontent)
             if apk_urls is None:
                 return
@@ -103,17 +103,17 @@ class EventController():
         self.guiobj.lc_apk_info.DeleteAllItems()
 
     def do_install(self,event):
-        #»ñÈ¡Òª°²×°apkµÄ¾ø¶ÔÂ·¾¶
+        #è·å–è¦å®‰è£…apkçš„ç»å¯¹è·¯å¾„
         index = self.guiobj.lc_apk_info.GetFirstSelected()
         filename = self.apk_list[index]
         filepath = self.apkObj.apk_abs_path(filename)
         apkPackageName = self.apkObj.get_apk_package_name(filepath)
-        #»ñÈ¡±»°²×°apkÉè±¸µÄsnoºÅ
+        #è·å–è¢«å®‰è£…apkè®¾å¤‡çš„snoå·
         choiseitemid = self.guiobj.lc_device_info.GetFocusedItem()
         if choiseitemid == -1:
             return
         phonemodel = self.guiobj.lc_device_info.GetItem(choiseitemid, col=1).GetText()
-        #Ö´ĞĞ°²×°
+        #æ‰§è¡Œå®‰è£…
         for sno in self.deviceInfo:
             if self.deviceInfo[sno]["phone_model"] == phonemodel:
                 self.pctrObj.install_one_device(sno,filepath,apkPackageName)
@@ -121,16 +121,16 @@ class EventController():
                 #pctrObj.is_has_package(sno,apkPackageName)
 
     def do_install_more(self,event):
-        #»ñÈ¡Òª°²×°apkµÄ¾ø¶ÔÂ·¾¶
+        #è·å–è¦å®‰è£…apkçš„ç»å¯¹è·¯å¾„
         index = self.guiobj.lc_apk_info.GetFirstSelected()
         filename = self.apk_list[index]
         filepath = self.apkObj.apk_abs_path(filename)
         apkPackageName = self.apkObj.get_apk_package_name(filepath)
-        #»ñÈ¡±»°²×°apkÉè±¸µÄsnoºÅ
+        #è·å–è¢«å®‰è£…apkè®¾å¤‡çš„snoå·
         first = self.guiobj.lc_device_info.GetFirstSelected()
         while first != -1:
             phonemodel = self.guiobj.lc_device_info.GetItem(first, col=1).GetText()
-            #Ö´ĞĞ°²×°
+            #æ‰§è¡Œå®‰è£…
             for sno in self.deviceInfo:
                 if self.deviceInfo[sno]["phone_model"] == phonemodel:
                     self.pctrObj.install_one_device(sno,filepath,apkPackageName)
@@ -145,17 +145,17 @@ class EventController():
         self.pctrObj.install_all_devices(filepath, apkPackageName)
 
     def do_cover_install(self,event):
-        #»ñÈ¡Òª°²×°apkµÄ¾ø¶ÔÂ·¾¶
+        #è·å–è¦å®‰è£…apkçš„ç»å¯¹è·¯å¾„
         index = self.guiobj.lc_apk_info.GetFirstSelected()
         filename = self.apk_list[index]
         filepath = self.apkObj.apk_abs_path(filename)
         apkPackageName = self.apkObj.get_apk_package_name(filepath)
-        #»ñÈ¡±»°²×°apkÉè±¸µÄsnoºÅ
+        #è·å–è¢«å®‰è£…apkè®¾å¤‡çš„snoå·
         choiseitemid = self.guiobj.lc_device_info.GetFocusedItem()
         if choiseitemid == -1:
             return
         phonemodel = self.guiobj.lc_device_info.GetItem(choiseitemid, col=1).GetText()
-        #Ö´ĞĞ°²×°
+        #æ‰§è¡Œå®‰è£…
         for sno in self.deviceInfo:
             if self.deviceInfo[sno]["phone_model"] == phonemodel:
                 self.pctrObj.cover_install(sno,filepath,apkPackageName)
@@ -188,7 +188,7 @@ class EventController():
             print ">>>No Choice Device"
             return
         phonemodel = self.guiobj.lc_device_info.GetItem(choiseitemid, col=1).GetText()
-        #µ¯³öÒ»¸öÎÄ±¾¿òÌáÊ¾ÊäÈëĞÅÏ¢
+        #å¼¹å‡ºä¸€ä¸ªæ–‡æœ¬æ¡†æç¤ºè¾“å…¥ä¿¡æ¯
         # iptxt_obj = wx.TextEntryDialog(None,'in the "http://v.youku.com/" following',caption="Input to send messages to the phone",  style=wx.OK|wx.CANCEL|wx.CENTRE)
         iptxt_obj = wx.TextEntryDialog(None,'in the following',caption="Input to send messages to the phone",  style=wx.OK|wx.CANCEL|wx.CENTRE)
         while 1:
