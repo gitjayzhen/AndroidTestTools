@@ -8,7 +8,7 @@ class RequestData():
         pass
     def do_get(self,url_text):
         request_header = {
-        'Host':'play.partner.youku.com',
+        'Host':'',
         'Connection':'keep-alive',
         'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
         'Upgrade-Insecure-Requests': 1,
@@ -18,7 +18,7 @@ class RequestData():
         'Cookie':'__ysuid=1473417512712xXb; ypvid=14743795374386AFUt5; yseid=14743795374382xarz1; ysestep=1; yseidcount=1; yseidtimeout=1474386737439; ycid=0; ystep=1; juid=01at3tsn132jba; seid=01at3tsn142k1i; referhost=https%3A%2F%2Fwww.google.com.hk; seidtimeout=1474381337444; ykss=fa3ee157011bf65f1307ef9b; cna=tLc4EDfpvTwCAXzKqr6XWdof'
         }
 
-        request_url = "http://play.partner.youku.com/weibo/video/card?url=http://v-wb.youku.com/%s"%url_text
+        request_url = "%s"%url_text
         cj = cookielib.CookieJar()
         opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
         urllib2.install_opener(opener)
