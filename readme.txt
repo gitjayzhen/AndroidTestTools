@@ -69,6 +69,9 @@ ADB环境变量设置(android sdk)：
     1.添加截图功能
     2.使用requests替换urllib
 
+第六版修改需求：
+    1.使用subprocess.Popen代替os.popen
+
 
 
 

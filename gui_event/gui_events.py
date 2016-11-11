@@ -3,7 +3,7 @@ from gui_controller.package_analysis import PackageController
 from gui_controller.apk_controller import ApkController
 from gui_controller.device_info import DeviceInfo
 from gui_controller.download_apk import DownloadApk
-from gui_controller.youku_for_weibo_url import RequestData
+
 import easygui
 import re
 import time
@@ -16,7 +16,7 @@ class EventController():
         self.deviceInfo = self.dinfoObj.get_devices_as_dict()
         self.apkObj = ApkController()
         self.pctrObj = PackageController()
-        self.repObj = RequestData()
+        #self.repObj = RequestData()
 
     def refresh_device_info(self):
         self.deviceInfo = self.dinfoObj.get_devices_as_dict()
@@ -32,7 +32,7 @@ class EventController():
 
     def do_download(self,event):
         downobj = DownloadApk()
-        android_url  = ""
+        android_url  = "http://30.96.68.173/youku/android/"
         branch_versions = downobj.get_android_branch_verisons(android_url)
         if branch_versions is None or len(branch_versions) <0:
             return
