@@ -9,6 +9,7 @@ import re
 import time
 import wx
 
+
 class EventController():
     def __init__(self,guiobj):
         self.guiobj = guiobj
@@ -225,6 +226,8 @@ class EventController():
         sno = self.get_device_items_choised_sno()
         self.dinfoObj.capture_window(sno)
 
+    def get_app_crash_log(self,event):
+        self.dinfoObj.get_crash_log()
 
 
 
