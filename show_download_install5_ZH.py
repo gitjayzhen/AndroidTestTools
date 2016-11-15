@@ -75,6 +75,8 @@ class MyDialog(wx.Dialog):
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_input_text, id=20)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.on_close, id=21)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_app_crash_log,id=22)
+        self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_current_app_package_name,id=23)
+        self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_current_app_activity,id=24)
         #将vbox2和hbox1添加到w_vbox中
         main_vbox.Add(vbox1_phone_info, 1, wx.EXPAND)
         main_vbox.Add(vbox2_apk_info, 1, wx.EXPAND)

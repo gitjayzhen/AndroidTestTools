@@ -76,20 +76,21 @@ class AndroidUtils(object):
             raise exception.SriptException("Operation not permitted or No such process")
 
     #获取设备上当前应用的包名与activity
-    def get_focused_package_and_activity(self):
+    def get_focused_package_and_activity(self,sno):
+        #mFocusedActivity: ActivityRecord{b4b5e98 u0 com.youku.phone/com.youku.ui.activity.HomePageActivity t3309}
         #pattern = re.compile(r"[a-zA-Z0-9\.]+/.[a-zA-Z0-9\.]+")
         #out = shell("dumpsys window w | %s \/ | %s name=" %(find_util, find_util)).stdout.read()
 
         #return pattern.findall(out)[0]
-        return shell("dumpsys activity | findstr mFocusedActivity").stdout.read().split()[-1][:-1]
+        return self.shell(sno,"dumpsys activity | findstr mFocusedActivity").stdout.read().split()[-2]
 
     #获取当前应用的包名
-    def get_current_package_name(self):
-        return get_focused_package_and_activity().split("/")[0]
+    def get_current_package_name(self,sno):
+        return self.get_focused_package_and_activity(sno).split("/")[0]
 
     #获取当前设备的activity
-    def get_current_activity(self):
-        return get_focused_package_and_activity().split("/")[-1]
+    def get_current_activity(self,sno):
+        return self.get_focused_package_and_activity(sno).split("/")[-1]
 
     #时间戳
     def timestamp(self):

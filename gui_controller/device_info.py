@@ -104,10 +104,10 @@ class DeviceInfo():
         c_time = time.strftime("%Y_%m_%d_%H-%M-%S")
         self.android.adb(sno, 'pull /sdcard/screenshot.png C:/Users/jayzhen/Desktop/%s.png"'%c_time)
 
-    def get_crash_log(self):
+    def get_crash_log(self,sno):
         # 获取app发生crash的时间列表
         time_list = []
-        result_list = self.android.shell("dumpsys dropbox | findstr data_app_crash").stdout.readlines()
+        result_list = self.android.shell(sno,"dumpsys dropbox | findstr data_app_crash").stdout.readlines()
         for time in result_list:
             temp_list = time.split(" ")
             temp_time= []
@@ -118,9 +118,16 @@ class DeviceInfo():
         if time_list is None or len(time_list) <=0:
             print ">>>No crash log to get"
             return None
-        log_file = "T://crash_log/%s.txt" %self.android.timestamp()
-        f = open(log_file, "w")
+        log_file = "T://crash_log_%s.txt" %self.android.timestamp()
+        f = open(log_file, "wb")
         for time in time_list:
-            cash_log = self.android.shell("dumpsys dropbox --print %s" %time).stdout.read()
+            cash_log = self.android.shell(sno,"dumpsys dropbox --print %s" %time).stdout.read()
             f.write(cash_log)
         f.close()
+        print ">>>check local file"
+
+    def current_package_name(self,sno):
+        print ">>>package name of current app" + self.android.get_current_package_name(sno)
+
+    def current_activity(self,sno):
+        print ">>>activity fo current app" + self.android.get_current_activity(sno)

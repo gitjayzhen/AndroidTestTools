@@ -227,9 +227,15 @@ class EventController():
         self.dinfoObj.capture_window(sno)
 
     def get_app_crash_log(self,event):
-        self.dinfoObj.get_crash_log()
+        sno = self.get_device_items_choised_sno()
+        self.dinfoObj.get_crash_log(sno)
 
-
+    def get_current_app_package_name(self,sno):
+        sno = self.get_device_items_choised_sno()
+        self.dinfoObj.current_package_name(sno)
+    def get_current_app_activity(self,sno):
+        sno = self.get_device_items_choised_sno()
+        self.dinfoObj.current_activity(sno)
 
 
 
