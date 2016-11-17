@@ -127,7 +127,7 @@ class DeviceInfo():
         print ">>>check local file"
 
     def current_package_name(self,sno):
-        print ">>>package name of current app" + self.android.get_current_package_name(sno)
+        print ">>>package name of current app is [" + self.android.get_current_package_name(sno) +"]"
 
     def current_activity(self,sno):
-        print ">>>activity fo current app" + self.android.get_current_activity(sno)
+        print ">>>activity fo current app is [" + self.android.get_current_activity(sno)+"]"

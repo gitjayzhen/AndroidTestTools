@@ -71,6 +71,9 @@ ADB环境变量设置(android sdk)：
 
 第六版修改需求：
     1.使用subprocess.Popen代替os.popen
+    2.添加crash log抓取
+    3.添加当前app包名
+    4.添加当前app activity
 
 
 

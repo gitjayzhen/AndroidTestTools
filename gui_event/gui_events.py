@@ -33,7 +33,7 @@ class EventController():
 
     def do_download(self,event):
         downobj = DownloadApk()
-        android_url  = ""
+        android_url  = "http://30.96.68.173/youku/android/"
         branch_versions = downobj.get_android_branch_verisons(android_url)
         if branch_versions is None or len(branch_versions) <0:
             return
