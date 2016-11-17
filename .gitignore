@@ -1,0 +1,5 @@
+*.py[cod]
+*$py.class
+#这两个目录下的改动不上传
+gui_thread/
+gui_view/
