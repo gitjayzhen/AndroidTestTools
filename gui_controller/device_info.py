@@ -131,3 +131,6 @@ class DeviceInfo():
 
     def current_activity(self,sno):
         print ">>>activity fo current app is [" + self.android.get_current_activity(sno)+"]"
+
+    def win_serivce_port_restart(self):
+        self.android.stop_and_restart_5037()

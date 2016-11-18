@@ -238,6 +238,6 @@ class EventController():
         self.dinfoObj.current_activity(sno)
 
     def reset_service_port(self,event):
-        self.dinfoObj.stop_and_restart_5037()
+        self.dinfoObj.win_serivce_port_restart()
 
 
