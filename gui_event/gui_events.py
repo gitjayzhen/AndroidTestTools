@@ -230,13 +230,14 @@ class EventController():
         sno = self.get_device_items_choised_sno()
         self.dinfoObj.get_crash_log(sno)
 
-    def get_current_app_package_name(self,sno):
+    def get_current_app_package_name(self,event):
         sno = self.get_device_items_choised_sno()
         self.dinfoObj.current_package_name(sno)
-    def get_current_app_activity(self,sno):
+    def get_current_app_activity(self,event):
         sno = self.get_device_items_choised_sno()
         self.dinfoObj.current_activity(sno)
 
-
+    def reset_service_port(self,event):
+        self.dinfoObj.stop_and_restart_5037()
 
 
