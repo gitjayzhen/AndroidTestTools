@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#需要安装pychartdir模块，http://blog.csdn.net/gb112211/article/details/43272049
+#需要安装pychartdir模块
 
 import string
 from utils import AndroidUtils
@@ -9,7 +9,7 @@ from pychartdir import *
 
 PATH = lambda p: os.path.abspath(p)
 
-#打开待测应用，运行脚本，默认times为20次（可自己手动修改次数），获取该应用cpu、memory占用率的曲线图，图表保存至chart目录下
+#打开待测应用，运行脚本，默认times为30次（可自己手动修改次数），获取该应用cpu、memory占用率的曲线图，图表保存至chart目录下
 utils = AndroidUtils()
 #top次数
 times = 30
