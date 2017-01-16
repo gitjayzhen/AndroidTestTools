@@ -6,6 +6,13 @@ import re
 import subprocess
 import time
 import exception
+import string
+import sys
+import json
+
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 
 class AndroidUtils(object):
     def __init__(self):
@@ -129,3 +136,82 @@ class AndroidUtils(object):
         #杀死该进程
         os.system("taskkill /F /PID %s" %pid)
         os.system("adb start-server")
+
+    '''
+    2016.12.20获取当前所有运行的活动（运行的app）
+    '''
+    def get_running_activity(self):
+        getActivityCmd = "adb shell dumpsys activity activities"
+        tempString = os.popen(getActivityCmd).read()
+        returnString = []
+        startIndex = 0
+        tempString = tempString.split('\n')
+        for line in tempString:
+            line = line.strip()
+            if line:
+                returnString.append(line)
+        #使用了枚举方式
+        for index,line in enumerate(returnString):
+            if "Running activities" in line:
+                startIndex = index
+                break
+        returnList = returnString[startIndex:startIndex+3]
+        return returnList[-1]
+
+    """
+    2017.01.12 @pm 添加系统在4.4.x(sdk>19)以上手机可以进行截取屏幕视频动画的功能
+               @func 判断系统->执行任务->获取结果
+    """
+    def get_srceenrecord(self,sno,times,path):
+        PATH = lambda p: os.path.abspath(p)
+        sdk = string.atoi(self.shell(sno,"getprop ro.build.version.sdk").stdout.read())
+        try:
+            times = string.atoi(times)
+        except ValueError, e:
+            print ">>>Value error because you enter value is not int type, use default 'times=20s'"
+            times = int(20)
+        if sdk >= 19:
+                self.shell(sno,"screenrecord --time-limit %d /data/local/tmp/screenrecord.mp4"%times).wait()
+                print ">>>Get Video file..."
+                time.sleep(1.5)
+                path = PATH(path)
+                if not os.path.isdir(path):
+                    os.makedirs(path)
+                self.adb(sno,"pull /data/local/tmp/screenrecord.mp4 %s"  %PATH("%s/%s.mp4" %(path, self.timestamp()))).wait()
+                self.shell(sno, "rm /data/local/tmp/screenrecord.mp4")
+                print ">>>ok"
+        else:
+            print "sdk version is %d, less than 19!" %sdk
+            sys.exit(0)
+    """
+    2017.01.13 @pm 杀死进程同在设置中强制关闭一个程序
+               @func get到sno和package，进行命令执行
+    """
+    def execute_kill_specified_process(self,sno,specified_package):
+        self.shell(sno, "am force-stop %s"%specified_package)
+
+    """
+    2017.01.13 @pm #获取设备上当前应用的权限列表
+                   #Windows下会将结果写入permission.txt文件中，其他系统打印在控制台
+    """
+    def get_permission_list(self,sno,package_name):
+        PATH = lambda p: os.path.abspath(p)
+        permission_list = []
+        result_list = self.shell(sno,"dumpsys package %s | findstr android.permission" %package_name).stdout.readlines()
+        for permission in result_list:
+            permission_list.append(permission.strip())
+        pwd = os.path.join(os.getcwd(),"gui_controller\\scriptUtils")
+        permission_json_file = file("%s\\permission.json"%pwd)
+        file_content = json.load(permission_json_file)["PermissList"]
+        name = "_".join(package_name.split("."))
+        f = open(PATH("%s\\%s_permission.txt" %(pwd,name)), "w")
+        f.write("package: %s\n\n" %package_name)
+        for permission in permission_list:
+            for permission_dict in file_content:
+                if permission == permission_dict["Key"]:
+                    f.write(permission_dict["Key"] + ":\n  " + permission_dict["Memo"] + "\n")
+        f.close
+
+
+
+

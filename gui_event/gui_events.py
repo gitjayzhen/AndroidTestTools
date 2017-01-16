@@ -30,10 +30,20 @@ class EventController():
                 self.guiobj.lc_device_info.SetStringItem(num_items,3, self.deviceInfo[d]["dpi"],wx.LIST_FORMAT_CENTER)
                 self.guiobj.lc_device_info.SetStringItem(num_items,4, self.deviceInfo[d]["image_resolution"],wx.LIST_FORMAT_CENTER)
                 self.guiobj.lc_device_info.SetStringItem(num_items,5, self.deviceInfo[d]["ip"] ,wx.LIST_FORMAT_CENTER)
+                self.guiobj.lc_device_info.SetStringItem(num_items,6, d ,wx.LIST_FORMAT_CENTER)
+
+    def refresh_apk_info(self):
+        self.apk_list = self.apkObj.apk_list()
+        num_items = self.guiobj.lc_apk_info.GetItemCount()
+        if self.apk_list is not None:
+            if self.guiobj.lc_apk_info.GetItemCount():
+                self.guiobj.lc_apk_info.ClearAll()
+            for a in self.apk_list:
+                self.guiobj.lc_apk_info.InsertStringItem(num_items,a)
 
     def do_download(self,event):
         downobj = DownloadApk()
-        android_url  = ""
+        android_url  = "http://30.96.68.173/youku/android/"
         branch_versions = downobj.get_android_branch_verisons(android_url)
         if branch_versions is None or len(branch_versions) <0:
             return
@@ -60,15 +70,6 @@ class EventController():
         except TypeError,e:
             print "TypeError >>> show gui happend ERROR"
 
-    def refresh_apk_info(self):
-        self.apk_list = self.apkObj.apk_list()
-        num_items = self.guiobj.lc_apk_info.GetItemCount()
-        if self.apk_list is not None:
-            if self.guiobj.lc_apk_info.GetItemCount():
-                self.guiobj.lc_apk_info.ClearAll()
-            for a in self.apk_list:
-                self.guiobj.lc_apk_info.InsertStringItem(num_items,a)
-
     def do_refresh(self, event):
         if self.guiobj.lc_device_info.GetItemCount():
             self.guiobj.lc_device_info.DeleteAllItems()
@@ -81,7 +82,10 @@ class EventController():
 
     def remove_local_file(self,event):
         index = self.guiobj.lc_apk_info.GetFocusedItem()
-        filename = self.apk_list[index]
+        if index is None or index < 0:
+            print ">>>None file is choised"
+            return
+        filename = self.guiobj.lc_apk_info.GetItemText(index)
         filepath = self.apkObj.apk_abs_path(filename)
         md = wx.MessageDialog(None, "will delete local file : %s" %filename, caption="Sure ?", style=wx.OK|wx.CANCEL|wx.CENTRE, pos=wx.DefaultPosition).ShowModal()
         if md == 5100:
@@ -105,13 +109,17 @@ class EventController():
 
     def do_install(self,event):
         #获取要安装apk的绝对路径
+        #2016.12.7 修复因图形中的数据排序与list中的数据排序的不同引起的数据获取错误
         index = self.guiobj.lc_apk_info.GetFirstSelected()
-        filename = self.apk_list[index]
+        filename = self.guiobj.lc_apk_info.GetItemText(index)
+        # filename = self.apk_list[index]
         filepath = self.apkObj.apk_abs_path(filename)
         apkPackageName = self.apkObj.get_apk_package_name(filepath)
+
         #获取被安装apk设备的sno号
         choiseitemid = self.guiobj.lc_device_info.GetFocusedItem()
         if choiseitemid == -1:
+            print ">>>Device_items No Choice Device"
             return
         phonemodel = self.guiobj.lc_device_info.GetItem(choiseitemid, col=1).GetText()
         #执行安装
@@ -124,7 +132,7 @@ class EventController():
     def do_install_more(self,event):
         #获取要安装apk的绝对路径
         index = self.guiobj.lc_apk_info.GetFirstSelected()
-        filename = self.apk_list[index]
+        filename = self.guiobj.lc_apk_info.GetItemText(index)
         filepath = self.apkObj.apk_abs_path(filename)
         apkPackageName = self.apkObj.get_apk_package_name(filepath)
         #获取被安装apk设备的sno号
@@ -140,7 +148,7 @@ class EventController():
 
     def do_install_all(self,event):
         index = self.guiobj.lc_apk_info.GetFirstSelected()
-        filename = self.apk_list[index]
+        filename = self.guiobj.lc_apk_info.GetItemText(index)
         filepath = self.apkObj.apk_abs_path(filename)
         apkPackageName = self.apkObj.get_apk_package_name(filepath)
         self.pctrObj.install_all_devices(filepath, apkPackageName)
@@ -148,7 +156,7 @@ class EventController():
     def do_cover_install(self,event):
         #获取要安装apk的绝对路径
         index = self.guiobj.lc_apk_info.GetFirstSelected()
-        filename = self.apk_list[index]
+        filename = self.guiobj.lc_apk_info.GetItemText(index)
         filepath = self.apkObj.apk_abs_path(filename)
         apkPackageName = self.apkObj.get_apk_package_name(filepath)
         #获取被安装apk设备的sno号
@@ -220,24 +228,58 @@ class EventController():
 
     def do_reboot(self,event):
         sno = self.get_device_items_choised_sno()
+        if sno is None or sno == "":
+            return
         self.dinfoObj.reboot_device(sno)
 
     def do_capture_window(self, event):
         sno = self.get_device_items_choised_sno()
+        if sno is None or sno == "":
+            return
         self.dinfoObj.capture_window(sno)
 
     def get_app_crash_log(self,event):
         sno = self.get_device_items_choised_sno()
+        if sno is None or sno == "":
+            return
         self.dinfoObj.get_crash_log(sno)
 
     def get_current_app_package_name(self,event):
         sno = self.get_device_items_choised_sno()
+        if sno is None or sno == "":
+            return
         self.dinfoObj.current_package_name(sno)
+
     def get_current_app_activity(self,event):
         sno = self.get_device_items_choised_sno()
+        if sno is None or sno == "":
+            return
         self.dinfoObj.current_activity(sno)
 
     def reset_service_port(self,event):
         self.dinfoObj.win_serivce_port_restart()
+
+    def do_screenrecord_event(self,event):
+        sno = self.get_device_items_choised_sno()
+        if sno is None or sno == "" :
+            return
+        iptxt_obj = wx.TextEntryDialog(None,'in the following',caption="srceenrecord --time-limt ",  style=wx.OK|wx.CANCEL|wx.CENTRE)
+        iptxt_obj.SetValue("")
+        res = iptxt_obj.ShowModal()
+        if res == wx.ID_OK:
+            txt =  iptxt_obj.GetValue().encode("utf-8")
+            if txt is None or txt == "":
+                return
+            self.dinfoObj.screenrecord(sno,txt)
+        elif res == wx.ID_CANCEL:
+            iptxt_obj.Destroy()
+
+    def do_kill_process_event(self,event):
+        sno = self.get_device_items_choised_sno()
+        self.dinfoObj.do_kill_process(sno,"com.youku.phone")
+
+    def get_app_permission_event(self,event):
+        sno = self.get_device_items_choised_sno()
+        self.dinfoObj.do_get_app_permission(sno,"com.youku.phone")
 
 

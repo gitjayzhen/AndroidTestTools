@@ -59,7 +59,7 @@ class PackageController():
             print '>>>[%s] install %s [FALSE]'%(sno,os.path.basename(apk_name))
 
     def cover_install(self,sno,apk_name,apk_package_name):
-        nstall_result = self.android.adb(sno,'install %s'%apk_name).stdout.read()
+        install_result = self.android.adb(sno,'install -r %s'%apk_name).stdout.read()
         boolean = self.is_has_package(sno,apk_package_name)
         if re.findall(r'Success',install_result) or boolean:
             print '>>>[%s] adb install %s [SUCCESS]' %(sno,os.path.basename(apk_name))
@@ -82,6 +82,6 @@ class PackageController():
             else:
                 print ">>> Clear work ERROR"
         else:
-            print ">>>NO Package :",package_name
+            print ">>> NO Package :",package_name
 
 

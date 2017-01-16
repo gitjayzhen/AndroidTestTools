@@ -4,6 +4,7 @@ import easygui
 import re
 import time
 import wx
+
 '''
 以dialog为window窗口展示界面（依然是继承wx.app）：
 1.main_vbox为整个窗口界面的垂直分布。
@@ -27,12 +28,14 @@ class MyDialog(wx.Dialog):
         self.lc_device_info = wx.ListCtrl(self, -1, style=wx.LC_REPORT)
         self.lc_device_info.InsertColumn(0, '品 牌'.decode('utf8'),wx.LIST_FORMAT_RIGHT,width= 80)
         self.lc_device_info.InsertColumn(1, '型 号'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=85)
-        self.lc_device_info.InsertColumn(2, '系统版本'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=80)
-        self.lc_device_info.InsertColumn(3, '像素密度'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=80)
-        self.lc_device_info.InsertColumn(4, '分辨率'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=100)
-        self.lc_device_info.InsertColumn(5, 'IP'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=160)
+        self.lc_device_info.InsertColumn(2, '系统版本'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=70)
+        self.lc_device_info.InsertColumn(3, '像素密度'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=70)
+        self.lc_device_info.InsertColumn(4, '分辨率'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=90)
+        self.lc_device_info.InsertColumn(5, 'IP'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=100)
+        self.lc_device_info.InsertColumn(6, 'Sno'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=120)
         vbox1_phone_info.Add(self.lc_device_info, 1, wx.EXPAND | wx.ALL, 3)
         self.event_ctrl.refresh_device_info()
+
         #中间部分显示apk文件目录
         self.lc_apk_info = wx.ListCtrl(self, -1, style=wx.LC_LIST|wx.LC_SORT_ASCENDING)
         vbox2_apk_info.Add(self.lc_apk_info, 1, wx.EXPAND | wx.ALL, 3)
@@ -43,8 +46,8 @@ class MyDialog(wx.Dialog):
         grid_button.AddMany([
                        (wx.Button(panl, 10, '刷新列表'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
                        (wx.Button(panl, 11, '清空列表'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
-                       (wx.Button(panl, 12, '下载最新'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
-                       (wx.Button(panl, 13, '移除本地'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
+                       (wx.Button(panl, 12, '移除本地'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
+                       (wx.Button(panl, 13, '录制视频'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
                        (wx.Button(panl, 14, '截取屏幕'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
                        (wx.Button(panl, 15, '重启设备'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
                        (wx.Button(panl, 16, '单个安装'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
@@ -52,7 +55,7 @@ class MyDialog(wx.Dialog):
                        (wx.Button(panl, 18, '覆盖安装'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
                        (wx.Button(panl, 19, '清除数据'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
                        (wx.Button(panl, 20, '发送数据'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
-                       (wx.Button(panl, 21, '关闭窗口'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
+                       (wx.Button(panl, 21, '杀死进程'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
                        (wx.Button(panl, 22, '崩溃日志'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
                        (wx.Button(panl, 23, '当前包名'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
                        (wx.Button(panl, 24, '当前活动'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
@@ -63,9 +66,10 @@ class MyDialog(wx.Dialog):
         panl.SetSizer(grid_button)
         #为各个btn设置时间监听
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_refresh, id=10)
-        self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_download, id=12)
+        #self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_download, id=12)
+        self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_screenrecord_event, id=13)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_Clear, id=11)
-        self.Bind(wx.EVT_BUTTON, self.event_ctrl.remove_local_file, id=13)
+        self.Bind(wx.EVT_BUTTON, self.event_ctrl.remove_local_file, id=12)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_capture_window, id=14)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_reboot, id=15)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_install, id=16)
@@ -73,10 +77,11 @@ class MyDialog(wx.Dialog):
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_cover_install, id=18)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_clear_data, id=19)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_input_text, id=20)
-        self.Bind(wx.EVT_BUTTON, self.event_ctrl.on_close, id=21)
+        self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_kill_process_event, id=21)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_app_crash_log,id=22)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_current_app_package_name,id=23)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_current_app_activity,id=24)
+        self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_app_permission_event,id=25)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.reset_service_port, id=27)
         #将vbox2和hbox1添加到w_vbox中
         main_vbox.Add(vbox1_phone_info, 1, wx.EXPAND)
@@ -86,7 +91,7 @@ class MyDialog(wx.Dialog):
 
 class MyApp(wx.App):
     def OnInit(self):
-        dlg = MyDialog(None, -1, '安卓手机辅助工具'.decode("utf8"))
+        dlg = MyDialog(None, -1, '辅助工具_jayzhen_v7.5'.decode("utf8"))
         dlg.ShowModal()
         dlg.Destroy()
         return True

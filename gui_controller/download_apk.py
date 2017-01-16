@@ -23,7 +23,9 @@ class DownloadApk():
             return None
         if response.getcode() != 200:      #如果访问的状态不是：200（成功），返回none
             return None
-        return response.read()
+        content = response.read()
+        response.close()
+        return content
 
     def use_requests_download_html(self,url):
         if url is None:
@@ -35,7 +37,9 @@ class DownloadApk():
             return None
         if response.status_code != 200:      #如果访问的状态不是：200（成功），返回none
             return None
-        return response.text
+        content = response.text
+        response.close()
+        return content
     '''
     解析并获取网页中的以apk结尾的链接
     '''
@@ -109,11 +113,12 @@ class DownloadApk():
         if os.path.exists(path_apk):
             print ">>>the [%s] is existing"%apk_file_name
         else:
-            print "download >>> ",url
+            print ">>>download ",url
             #添加show dialog的方式，来提示
             urllib.urlretrieve(url,path_apk)
             if os.path.exists(path_apk):
-                print "download completed"
+                print ">>>download completed"
+
     def get_android_branch_verisons(self,android_url):
         versions_content = self.download_html(android_url)
         try:

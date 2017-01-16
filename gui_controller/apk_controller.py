@@ -44,6 +44,9 @@ class ApkController():
     def apk_abs_path(self,apkName):
         try:
             abspath = os.path.join(self.result_dir,apkName)
+            if not os.path.exists(abspath):
+                easygui.msgbox('>>>None apk file to REMOVE')
+                return None
         except TypeError,e:
             easygui.msgbox('You cant choices one apk file for install ,so apkAbsPath happend TypeError')
             return None
@@ -63,7 +66,7 @@ class ApkController():
                 res = re.findall(regc,res)
                 if res is not None and len(res) >0:
                     pname = str(res[0])
-                print "PackageName >>> the apk's package name is [%s]"%pname
+                print ">>> the apk's package name is [%s]"%pname
                 return pname
             else:
                 return None

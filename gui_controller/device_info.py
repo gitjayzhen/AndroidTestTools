@@ -49,6 +49,12 @@ class DeviceInfo():
     通过adb命令来获取连接上电脑的设备的信息。
     '''
     def get_info(self,sno):
+        phone_brand = None
+        phone_model = None
+        os_version = None
+        dpi = None
+        image_resolution = None
+        ip = None
         try:
             result = self.android.shell(sno, "cat /system/build.prop").stdout.readlines()
             for res in result:
@@ -99,10 +105,11 @@ class DeviceInfo():
         self.android.adb(sno, "reboot")
 
     def capture_window(self,sno):
-        self.android.shell(sno, "rm /sdcard/screenshot.png")
-        self.android.shell(sno, "/system/bin/screencap -p /sdcard/screenshot.png")
+        self.android.shell(sno, "rm /sdcard/screenshot.png").wait()
+        self.android.shell(sno, "/system/bin/screencap -p /sdcard/screenshot.png").wait()
+        print ">>>截取屏幕成功，在桌面查看文件。"
         c_time = time.strftime("%Y_%m_%d_%H-%M-%S")
-        self.android.adb(sno, 'pull /sdcard/screenshot.png C:/Users/jayzhen/Desktop/%s.png"'%c_time)
+        self.android.adb(sno, 'pull /sdcard/screenshot.png T:\\%s.png"'%c_time).wait()
 
     def get_crash_log(self,sno):
         # 获取app发生crash的时间列表
@@ -118,7 +125,7 @@ class DeviceInfo():
         if time_list is None or len(time_list) <=0:
             print ">>>No crash log to get"
             return None
-        log_file = "T://crash_log_%s.txt" %self.android.timestamp()
+        log_file = "T://Exception_log_%s.txt" %self.android.timestamp()
         f = open(log_file, "wb")
         for time in time_list:
             cash_log = self.android.shell(sno,"dumpsys dropbox --print %s" %time).stdout.read()
@@ -127,10 +134,25 @@ class DeviceInfo():
         print ">>>check local file"
 
     def current_package_name(self,sno):
+        if sno is None or sno == "":
+            print ">>>Device_items No Choice Device"
+            return
         print ">>>package name of current app is [" + self.android.get_current_package_name(sno) +"]"
 
     def current_activity(self,sno):
+        if sno is None or sno == "":
+            print ">>>Device_items No Choice Device"
+            return
         print ">>>activity fo current app is [" + self.android.get_current_activity(sno)+"]"
 
     def win_serivce_port_restart(self):
         self.android.stop_and_restart_5037()
+
+    def screenrecord(self,sno,times):
+        self.android.get_srceenrecord(sno, times, "T:\\")
+
+    def do_kill_process(self,sno,package):
+        self.android.execute_kill_specified_process(sno,package)
+
+    def do_get_app_permission(self,sno,package_name):
+        self.android.get_permission_list(sno, package_name)

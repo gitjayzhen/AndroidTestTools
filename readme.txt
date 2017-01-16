@@ -3,12 +3,12 @@
 技术实现所使用到的python模块：
     1.time
     2.re
-    3.easygui   （三方）
-    4.wx        （三方）
+    3.easygui   (0.98.0)（三方）
+    4.wx        （3.0）三方）
     5.os
-    6.bs4.BeaufulSoup   （三方）
+    6.bs4.BeaufulSoup (0.0.1)（三方）
     7.urllib,urllib2,urlparse
-    8.requests   （三方）
+    8.requests (2.12.1)（三方）
 
 ADB环境变量设置(android sdk)：
     1.ANDROID_HONE:T:\Android\sdk
@@ -74,7 +74,14 @@ ADB环境变量设置(android sdk)：
     2.添加crash log抓取
     3.添加当前app包名
     4.添加当前app activity
+    5.修复一些bug
 
+第七版修改需求：
+    1.删去“下载”
+    2.添加录制视频功能
+    3.添加强制关闭进程的功能
+    4.查看app的应用所需的系统权限
+    5.添加cpu监控和内存消耗监控（基本实现，以后优化）
 
 
 
