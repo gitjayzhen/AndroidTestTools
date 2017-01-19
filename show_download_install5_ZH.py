@@ -82,6 +82,7 @@ class MyDialog(wx.Dialog):
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_current_app_package_name,id=23)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_current_app_activity,id=24)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_app_permission_event,id=25)
+        self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_app_cpu_mem_event,id=26)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.reset_service_port, id=27)
         #将vbox2和hbox1添加到w_vbox中
         main_vbox.Add(vbox1_phone_info, 1, wx.EXPAND)

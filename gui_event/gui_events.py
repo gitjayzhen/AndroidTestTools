@@ -3,6 +3,7 @@ from gui_controller.package_analysis import PackageController
 from gui_controller.apk_controller import ApkController
 from gui_controller.device_info import DeviceInfo
 from gui_controller.download_apk import DownloadApk
+from gui_controller.scriptUtils.get_cpu_mem_info import AppPerformanceMonitor
 
 import easygui
 import re
@@ -282,4 +283,20 @@ class EventController():
         sno = self.get_device_items_choised_sno()
         self.dinfoObj.do_get_app_permission(sno,"com.youku.phone")
 
+    def get_app_cpu_mem_event(self,event):
+        sno = self.get_device_items_choised_sno()
+        if sno is None or sno == "" :
+            return
+        iptxt_obj = wx.TextEntryDialog(None,'in the following',caption="top -n times ",  style=wx.OK|wx.CANCEL|wx.CENTRE)
+        iptxt_obj.SetValue("")
+        res = iptxt_obj.ShowModal()
+        if res == wx.ID_OK:
+            txt =  iptxt_obj.GetValue().encode("utf-8")
+            if txt is None or txt == "":
+                return
+            apm = AppPerformanceMonitor(sno,txt,"com.youku.phone")
+            data = apm.top()
+            apm.line_chart(data)
+        elif res == wx.ID_CANCEL:
+            iptxt_obj.Destroy()
 
