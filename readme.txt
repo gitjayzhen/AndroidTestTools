@@ -35,6 +35,22 @@ ADB环境变量设置(android sdk)：
     8.adb shell pm list packages  显示已安装的所有安装包（包括系统和第三方）
     9.adb shell pm clear packagename  清除应用的数据（初始化）
     10.aapt dunmp badging package_name 查看apk文件的信息
+    11.adb shell input text "string"
+        输入很长的字符,特殊字符，使用adb shell input 的时候会出问题  例如 特殊字符“&”
+        此时有两种方法：
+        1.使用转意符,就能正常输入了
+          adb shell input text "\&" #该命令执行后，手机文本输入框中就会有“&”
+          缺点：每个“&”前都要加一个转意符，否则会报错
+          例如： adb shell input text "\&dd&&" ，会报错
+        2.加一个空格字符前加一个空格，后面跟多少个特殊字符（&）都无所谓 adb shell input text " &&&&&&&hhd&&"
+        综上可以看出，adb shell input text中空格和'\'都是有特殊含义的
+        如果想在手机的编辑框中输入一个空格怎么办，这个就不能用 adb shell input text命令了
+        直接用 adb shell input  keyevent  62 就好了
+        输入'\'这个暂时没有好方法，adb shell input text " \h"  可以直接输入“\h”, 但是没有h，会报错
+        如果有好的方法欢迎补充
+        这个在输入网址的时候比较有用，尤其是url中的参数
+
+
 
 需求：
 
