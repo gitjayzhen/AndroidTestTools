@@ -1,0 +1,29 @@
+{
+    "111111112": {
+        "dpi": "320",
+        "image_resolution": "720x1280",
+        "ip": "192.168.1.102",
+        "os_version": "5.1.1",
+        "phone_brand": "Xiaomi",
+        "phone_model": "wt86047",
+        "ram": "2"
+    },
+    "1222221112": {
+        "dpi": "320",
+        "image_resolution": "720x1280",
+        "ip": "192.168.1.102",
+        "os_version": "5.1.1",
+        "phone_brand": "Xiaomi",
+        "phone_model": "wt86047",
+        "ram": "2"
+    },
+    "90d1894b722": {
+        "dpi": "320",
+        "image_resolution": "720x1280",
+        "ip": "192.168.1.102",
+        "os_version": "5.1.1",
+        "phone_brand": "Xiaomi",
+        "phone_model": "wt86047",
+        "ram": "2"
+    }
+}

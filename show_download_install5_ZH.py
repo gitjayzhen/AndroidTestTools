@@ -14,7 +14,7 @@ import wx
 '''
 class MyDialog(wx.Dialog):
     def __init__(self, parent, id, title):
-        wx.Dialog.__init__(self, parent, id, title, pos=(500,150),size=(630, 500),style=wx.DEFAULT_DIALOG_STYLE)
+        wx.Dialog.__init__(self, parent, id, title, pos=(500,150),size=(700, 550),style=wx.DEFAULT_DIALOG_STYLE)
         self.event_ctrl = EventController(self)
 
         main_vbox = wx.BoxSizer(wx.VERTICAL)#主界面
@@ -29,10 +29,11 @@ class MyDialog(wx.Dialog):
         self.lc_device_info.InsertColumn(0, '品 牌'.decode('utf8'),wx.LIST_FORMAT_RIGHT,width= 80)
         self.lc_device_info.InsertColumn(1, '型 号'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=85)
         self.lc_device_info.InsertColumn(2, '系统版本'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=70)
-        self.lc_device_info.InsertColumn(3, '像素密度'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=70)
-        self.lc_device_info.InsertColumn(4, '分辨率'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=90)
-        self.lc_device_info.InsertColumn(5, 'IP'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=100)
-        self.lc_device_info.InsertColumn(6, 'Sno'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=120)
+        self.lc_device_info.InsertColumn(3, '运行内存'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=70)
+        self.lc_device_info.InsertColumn(4, '像素密度'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=70)
+        self.lc_device_info.InsertColumn(5, '分辨率'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=90)
+        self.lc_device_info.InsertColumn(6, 'IP'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=100)
+        self.lc_device_info.InsertColumn(7, 'Udid'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=120)
         vbox1_phone_info.Add(self.lc_device_info, 1, wx.EXPAND | wx.ALL, 3)
         self.event_ctrl.refresh_device_info()
 

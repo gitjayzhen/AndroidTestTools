@@ -28,10 +28,11 @@ class EventController():
                 self.guiobj.lc_device_info.InsertStringItem(num_items, self.deviceInfo[d]["phone_brand"],wx.LIST_FORMAT_RIGHT)
                 self.guiobj.lc_device_info.SetStringItem(num_items,1, self.deviceInfo[d]["phone_model"],wx.LIST_FORMAT_CENTER)
                 self.guiobj.lc_device_info.SetStringItem(num_items,2, self.deviceInfo[d]["os_version"],wx.LIST_FORMAT_CENTER)
-                self.guiobj.lc_device_info.SetStringItem(num_items,3, self.deviceInfo[d]["dpi"],wx.LIST_FORMAT_CENTER)
-                self.guiobj.lc_device_info.SetStringItem(num_items,4, self.deviceInfo[d]["image_resolution"],wx.LIST_FORMAT_CENTER)
-                self.guiobj.lc_device_info.SetStringItem(num_items,5, self.deviceInfo[d]["ip"] ,wx.LIST_FORMAT_CENTER)
-                self.guiobj.lc_device_info.SetStringItem(num_items,6, d ,wx.LIST_FORMAT_CENTER)
+                self.guiobj.lc_device_info.SetStringItem(num_items,3, self.deviceInfo[d]["ram"],wx.LIST_FORMAT_CENTER)
+                self.guiobj.lc_device_info.SetStringItem(num_items,4, self.deviceInfo[d]["dpi"],wx.LIST_FORMAT_CENTER)
+                self.guiobj.lc_device_info.SetStringItem(num_items,5, self.deviceInfo[d]["image_resolution"],wx.LIST_FORMAT_CENTER)
+                self.guiobj.lc_device_info.SetStringItem(num_items,6, self.deviceInfo[d]["ip"] ,wx.LIST_FORMAT_CENTER)
+                self.guiobj.lc_device_info.SetStringItem(num_items,7, d ,wx.LIST_FORMAT_CENTER)
 
     def refresh_apk_info(self):
         self.apk_list = self.apkObj.apk_list()
@@ -300,3 +301,20 @@ class EventController():
         elif res == wx.ID_CANCEL:
             iptxt_obj.Destroy()
 
+    """
+    2017.02.15 @pm #向设备发送命令，并打印结果
+    """
+    def seed_cmd_to_device(self,event):
+        sno = self.get_device_items_choised_sno()
+        if sno is None or sno == "" :
+            return
+        iptxt_obj = wx.TextEntryDialog(None,'in the following',caption="adb or adb shell",  style=wx.OK|wx.CANCEL|wx.CENTRE)
+        iptxt_obj.SetValue("")
+        res = iptxt_obj.ShowModal()
+        if res == wx.ID_OK:
+            txt =  iptxt_obj.GetValue().encode("utf-8")
+            if txt is None or txt == "":
+                return
+        #正文待续。。。
+        elif res == wx.ID_CANCEL:
+            iptxt_obj.Destroy()

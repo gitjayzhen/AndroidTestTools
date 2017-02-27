@@ -47,13 +47,6 @@ class AndroidUtils(object):
     #adb shell命令
     def shell(self,serialno_num,args):
         cmd = "%s -s %s shell %s" %(self.command, serialno_num, str(args))
-        # if types is not None and types.has_key("read_type"):
-        #     if types["read_type"] == 0:
-        #         return subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.read()
-        #     elif types["read_type"] == 1:
-        #         return subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.readline()
-        #     elif types["read_type"] == 2:
-        #         return subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE).stdout.readlines()
         return subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 
@@ -75,7 +68,7 @@ class AndroidUtils(object):
         result.remove(result[0])
         return  pattern.findall(" ".join(result))[0]
 
-    #杀掉对应包名的进程
+    #杀掉对应包名的进程；另一个方式使用adb shell am force-stop pkg_name
     def kill_process(self,pkg_name):
         pid = get_app_pid(pkg_name)
         result = shell("kill %s" %str(pid)).stdout.read().split(": ")[-1]
@@ -84,11 +77,6 @@ class AndroidUtils(object):
 
     #获取设备上当前应用的包名与activity
     def get_focused_package_and_activity(self,sno):
-        #mFocusedActivity: ActivityRecord{b4b5e98 u0 com.youku.phone/com.youku.ui.activity.HomePageActivity t3309}
-        #pattern = re.compile(r"[a-zA-Z0-9\.]+/.[a-zA-Z0-9\.]+")
-        #out = shell("dumpsys window w | %s \/ | %s name=" %(find_util, find_util)).stdout.read()
-
-        #return pattern.findall(out)[0]
         return self.shell(sno,"dumpsys activity | findstr mFocusedActivity").stdout.read().split()[-2]
 
     #获取当前应用的包名
