@@ -27,7 +27,6 @@ class DeviceInfo():
             for sno in lists:
                 sno,phone_brand,phone_model,os_version,ram,dpi,image_resolution,ip = self.get_info(sno)
                 info[sno] = {"phone_brand":phone_brand,"phone_model":phone_model,"ram":ram,"os_version":os_version,"dpi":dpi,"image_resolution":image_resolution,"ip":ip}
-            print info
             return info
         except TypeError,e:
             return None
@@ -72,7 +71,6 @@ class DeviceInfo():
         ip = self.android.shell(sno,"getprop dhcp.wlan0.ipaddress").stdout.read()
         dpi = self.android.shell(sno, "getprop ro.sf.lcd_density").stdout.read()
         proc_meninfo = self.android.shell(sno, "cat /proc/meminfo").stdout.readline()
-        print proc_meninfo
         ram = (int(proc_meninfo.split(" ")[-2])//1000000)
         if int(proc_meninfo.split(" ")[-2])%1000000 >= 500000:
             ram += 1
@@ -90,7 +88,7 @@ class DeviceInfo():
             image_resolution = image_list_4_2[0]
         else:
             image_resolution = "NULL"
-        return sno,phone_brand,phone_model,os_version,str(ram),dpi.strip(),image_resolution,ip.strip()
+        return sno,phone_brand,phone_model,os_version,str(ram)+"GB",dpi.strip(),image_resolution,ip.strip()
         # except Exception,e:
         #     print ">>> Get device info happend ERROR :"+ str(e)
         #     return None

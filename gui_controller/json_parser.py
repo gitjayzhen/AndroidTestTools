@@ -2,23 +2,22 @@
 # -*- coding:utf-8 -*-
 import os
 import json
+from device_info import DeviceInfo
 class JsonParser():
     def __init__(self):
         self.json_obj = None
-        self.json_file_path = "T:\\OneDrive\\icloud\\Android\\ApkInstallTool\\logs\\android_devices_info.json"
+        self.json_file_path = os.path.join(os.path.dirname(os.getcwd()),"logs\\android_devices_info.json")
 
     def load_json(self,json_file_path):
         fin = open(json_file_path,"r")
-        # try:
-        json_obj = json.load(fin)
-        # except ValueError,e:
-            # json_obj = {}
+        try:
+            json_obj = json.load(fin)
+        except ValueError,e:
+            json_obj = {}
         fin.close()
-        print "file come to python obj",type(json_obj)
         return json_obj
 
     def get_value_with_key(self,json_key):
-
         return value
 
     def put_key_value(self,dict_data):
@@ -37,9 +36,9 @@ class JsonParser():
         except Exception,e:
             print e
         else:
-            print "True"
+            print "device info collect work has done, go to check json file"
 
 if __name__ == '__main__':
-    data = {'1222221112': {'phone_model': 'wt86047', 'ip': '192.168.1.102', 'ram': '2', 'os_version': '5.1.1', 'image_resolution': '720x1280', 'phone_brand': 'Xiaomi', 'dpi': '320'}}
+    and_obj  = DeviceInfo()
     json_paser =  JsonParser()
-    json_paser.put_key_value(data)
+    json_paser.put_key_value(and_obj.get_devices_as_dict())
