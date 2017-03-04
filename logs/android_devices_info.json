@@ -1,4 +1,31 @@
 {
+    "091504e9": {
+        "dpi": "480",
+        "image_resolution": "1080x1920",
+        "ip": "30.96.97.216",
+        "os_version": "4.4.4",
+        "phone_brand": "Xiaomi",
+        "phone_model": "MI 3",
+        "ram": "2GB"
+    },
+    "84534ad1": {
+        "dpi": "480",
+        "image_resolution": "1080x1920",
+        "ip": "192.168.1.100",
+        "os_version": "5.1.1",
+        "phone_brand": "OPPO",
+        "phone_model": "OPPO R9 Plusm A",
+        "ram": "4GB"
+    },
+    "90d1894b7d62": {
+        "dpi": "320",
+        "image_resolution": "720x1280",
+        "ip": "192.168.1.101",
+        "os_version": "5.1.1",
+        "phone_brand": "Xiaomi",
+        "phone_model": "wt86047",
+        "ram": "2GB"
+    },
     "TWP7LJ55OZTCTSVK": {
         "dpi": "480",
         "image_resolution": "1080x1920",
