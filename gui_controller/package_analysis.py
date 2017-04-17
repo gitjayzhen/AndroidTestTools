@@ -43,10 +43,10 @@ class PackageController():
         else:
             for sno in device_list:
                 self.install_one_device(sno,apk_name,apk_package_name)
+
     '''
     指定设备名，并指定apk进行安装，安装前会检测手机是否已经安装了该应用，如果有，先卸载
     '''
-
     def install_one_device(self,sno,apk_name,apk_package_name):
         had_package = self.android.shell(sno,'pm list packages |findstr "%s"'%apk_package_name).stdout.read()
         if re.search(apk_package_name,had_package):
