@@ -3,7 +3,7 @@
 技术实现所使用到的python模块：
     1.time
     2.re
-    3.easygui   (0.98.0)（三方）
+    3.easygui   (0.98.0)（三方） >pip install easygui 安装最新也行
     4.wx        （3.0）三方）
     5.os
     6.bs4.BeaufulSoup (0.0.1)（三方）
