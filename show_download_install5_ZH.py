@@ -1,4 +1,5 @@
-#coding=utf-8
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
 from gui_event.gui_events import EventController
 import easygui
 import re
@@ -12,6 +13,8 @@ import wx
 3.显示在中间部分是vbox2_apk_info，是垂直分布，其中是lc_apk_info.
 4.显示在最下面的是vbox_button，是垂直分布，添加有panel，panel中添加grid_button
 '''
+
+
 class MyDialog(wx.Dialog):
     def __init__(self, parent, id, title):
         wx.Dialog.__init__(self, parent, id, title, pos=(500,150),size=(700, 550),style=wx.DEFAULT_DIALOG_STYLE)
@@ -91,7 +94,9 @@ class MyDialog(wx.Dialog):
         main_vbox.Add(vbox3_button, 1, wx.EXPAND)
         self.SetSizer(main_vbox)
 
+
 class MyApp(wx.App):
+
     def OnInit(self):
         dlg = MyDialog(None, -1, '辅助工具_jayzhen_v7.5'.decode("utf8"))
         dlg.ShowModal()

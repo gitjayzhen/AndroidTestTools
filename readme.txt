@@ -49,6 +49,8 @@ ADB环境变量设置(android sdk)：
         输入'\'这个暂时没有好方法，adb shell input text " \h"  可以直接输入“\h”, 但是没有h，会报错
         如果有好的方法欢迎补充
         这个在输入网址的时候比较有用，尤其是url中的参数
+    12.adb shell cat cat /proc/meminfo 查看手机的运存大小（四舍五入：int(round(x))或int(2*x)/2+int(2*x)%2）
+       adb shell busybox free
 
 
 
