@@ -71,35 +71,11 @@ class DeviceInfo():
                 #手机品牌
                 elif re.search(r"ro\.product\.brand",res):
                     phone_brand = res.split('=')[-1].strip()
-            ip = self.android.shell(sno, "getprop dhcp.wlan0.ipaddress").stdout.read()
+            ip = self.get_device_wifi_ip(sno)
+            image_resolution = self.get_device_distinguishability(sno)
             dpi = self.android.shell(sno, "getprop ro.sf.lcd_density").stdout.read()
             proc_meninfo = self.android.shell(sno, "cat /proc/meminfo").stdout.readline()
-            #使用四舍五入的方式，算的手机的运行内存：int(round(x))或int(2*x)/2+int(2*x)%2
-            try:
-                mem_size = int(proc_meninfo.split(" ")[-2])
-                ram = int(round(mem_size / (1024 * 1024)))
-                """
-                ram = (int(proc_meninfo.split(" ")[-2])//1000000)
-                if int(proc_meninfo.split(" ")[-2]) % 1000000 >= 500000:
-                    ram += 1
-                """
-            except IndexError, e:
-                print ">>> Get deivce rom size happend: %s" % str(e)
-                ram = "X"
-            res_4_2 = self.android.shell(sno, "dumpsys window").stdout.read()
-            res_4_4 = self.android.shell(sno, "wm size").stdout.read()
-            r_4_2 = "init=(\d*x\d*)"
-            r_4_4 = "Physical size: (\d*x\d*)"
-            reg_4_4 = re.compile(r_4_4)
-            reg_4_2 = re.compile(r_4_2)
-            image_list_4_4 = re.findall(reg_4_4, res_4_4)
-            image_list_4_2 = re.findall(reg_4_2, res_4_2)
-            if len(image_list_4_4) > 0:
-                image_resolution = image_list_4_4[0]
-            elif len(image_list_4_2) > 0:
-                image_resolution = image_list_4_2[0]
-            else:
-                image_resolution = "NULL"
+            ram = self.get_device_ram(sno)
             return sno, phone_brand, phone_model, os_version, str(ram)+"GB", dpi.strip(), image_resolution, ip.strip()
         except Exception,e:
             print ">>> Get device info happend ERROR :"+ str(e)
@@ -154,9 +130,11 @@ class DeviceInfo():
         if sno is None or sno == "":
             print ">>>Device_items No Choice Device"
             return
-        print ">>>package name of current app is [" + self.android.get_current_package_name(sno) +"]"
+        current_pkg = self.android.get_current_package_name(sno)
+        print ">>>package name of current app is [" + current_pkg + "]"
+        return current_pkg
 
-    def current_activity(self,sno):
+    def current_activity(self, sno):
         if sno is None or sno == "":
             print ">>>Device_items No Choice Device"
             return
@@ -165,11 +143,65 @@ class DeviceInfo():
     def win_serivce_port_restart(self):
         self.android.stop_and_restart_5037()
 
-    def screenrecord(self,sno,times):
+    def screenrecord(self, sno, times):
         self.android.get_srceenrecord(sno, times, "T:\\")
 
-    def do_kill_process(self,sno,package):
+    def do_kill_process(self, sno, package):
         self.android.execute_kill_specified_process(sno,package)
 
-    def do_get_app_permission(self,sno,package_name):
+    def do_get_app_permission(self, sno, package_name):
         self.android.get_permission_list(sno, package_name)
+
+    """
+    20170512 jayzhen 因为有些手机在getprop中无法获取到ip，那么就使用ifconfig命令，这种情况出现在Android6.0系统以上
+    :param sno: 手机的唯一id
+    :return: 手机的wifi下的网络ip
+    """
+    def get_device_wifi_ip(self, sno):
+        ip = self.android.shell(sno, "getprop dhcp.wlan0.ipaddress").stdout.read()
+        if len(ip) < 5:
+            res = self.android.shell(sno, "ifconfig wlan0").stdout.readlines()
+            ip = (res[1].strip().split(" ")[1]).split(":")[1]
+        return ip
+
+    """
+    20170512 jayzhen 调整获取分辨率的方式
+    :param sno: 
+    :return: image_resolution
+    """
+    def get_device_distinguishability(self, sno):
+        res_4_2 = self.android.shell(sno, "dumpsys window").stdout.read()
+        r_4_2 = "init=(\d*x\d*)"
+        reg_4_2 = re.compile(r_4_2)
+        image_list_4_2 = re.findall(reg_4_2, res_4_2)
+        if len(image_list_4_2) > 0:
+            image_resolution = image_list_4_2[0]
+        else:
+            res_4_4 = self.android.shell(sno, "wm size").stdout.read()
+            r_4_4 = "Physical size: (\d*x\d*)"
+            reg_4_4 = re.compile(r_4_4)
+            image_list_4_4 = re.findall(reg_4_4, res_4_4)
+            image_resolution = image_list_4_4[0]
+            if len(image_list_4_4) < 0:
+                image_resolution = "NULL"
+        return image_resolution
+
+    """
+    20170512 jayzhen 将获取手机运行内存的方式从device_info中隔离出来：使用四舍五入的方式，算的手机的运行内存：int(round(x))或int(2*x)/2+int(2*x)%2
+    :param sno: 
+    :return: 
+    """
+    def get_device_ram(self, sno):
+        try:
+            mem_size = int(proc_meninfo.split(" ")[-2])
+            ram = int(round(mem_size / (1024 * 1024)))
+            """
+            ram = (int(proc_meninfo.split(" ")[-2])//1000000)
+            if int(proc_meninfo.split(" ")[-2]) % 1000000 >= 500000:
+                ram += 1
+            """
+            return ram
+        except IndexError, e:
+            print ">>> Get deivce rom size happend: %s" % str(e)
+            ram = "X"
+            return ram

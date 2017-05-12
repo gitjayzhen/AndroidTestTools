@@ -3,24 +3,26 @@
 import os
 import json
 from device_info import DeviceInfo
+
+
 class JsonParser():
     def __init__(self):
         self.json_obj = None
-        self.json_file_path = os.path.join(os.path.dirname(os.getcwd()),"logs\\android_devices_info.json")
+        self.json_file_path = os.path.join(os.path.dirname(os.getcwd()), "logs\\android_devices_info.json")
 
-    def load_json(self,json_file_path):
-        fin = open(json_file_path,"r")
+    def load_json(self, json_file_path):
+        fin = open(json_file_path, "r")
         try:
-            json_obj = json.load(fin)
-        except ValueError,e:
-            json_obj = {}
+            self.json_obj = json.load(fin)
+        except ValueError, e:
+            self.json_obj = {}
         fin.close()
-        return json_obj
+        return self.json_obj
 
-    def get_value_with_key(self,json_key):
-        return value
+    def get_value_with_key(self, json_key):
+        return self.json_obj[json_key]
 
-    def put_key_value(self,dict_data):
+    def put_key_value(self, dict_data):
         try:
             json_obj = self.load_json(self.json_file_path)
             n = 0
@@ -28,12 +30,12 @@ class JsonParser():
                 if not json_obj.has_key(k):
                     json_obj[k] = dict_data[k]
                     n += 1
-            if n == 0 :
+            if n == 0:
                 print "数据存在"
                 return None
-            with open(self.json_file_path,'w+') as json_f_obj:
-                json_f_obj.write(json.dumps(json_obj,sort_keys=True,indent =4,separators=(',', ': '),encoding="gbk",ensure_ascii=True))
-        except Exception,e:
+            with open(self.json_file_path, 'w+') as json_f_obj:
+                json_f_obj.write(json.dumps(json_obj, sort_keys=True, indent=4, separators=(',', ': '),encoding="gbk",ensure_ascii=True))
+        except Exception, e:
             print e
         else:
             print "device info collect work has done, go to check json file"

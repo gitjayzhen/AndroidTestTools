@@ -17,7 +17,7 @@ import wx
 
 class MyDialog(wx.Dialog):
     def __init__(self, parent, id, title):
-        wx.Dialog.__init__(self, parent, id, title, pos=(500,150),size=(700, 550),style=wx.DEFAULT_DIALOG_STYLE)
+        wx.Dialog.__init__(self, parent, id, title, pos=(500, 150), size=(750, 550), style=wx.DEFAULT_DIALOG_STYLE)
         self.event_ctrl = EventController(self)
 
         main_vbox = wx.BoxSizer(wx.VERTICAL)#主界面
@@ -29,14 +29,14 @@ class MyDialog(wx.Dialog):
 
         #window的上半部分：vbox2（lc_device_info）
         self.lc_device_info = wx.ListCtrl(self, -1, style=wx.LC_REPORT)
-        self.lc_device_info.InsertColumn(0, '品 牌'.decode('utf8'),wx.LIST_FORMAT_RIGHT,width= 80)
+        self.lc_device_info.InsertColumn(0, '品 牌'.decode('utf8'),wx.LIST_FORMAT_RIGHT,width= 78)
         self.lc_device_info.InsertColumn(1, '型 号'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=85)
-        self.lc_device_info.InsertColumn(2, '系统版本'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=70)
-        self.lc_device_info.InsertColumn(3, '运行内存'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=70)
-        self.lc_device_info.InsertColumn(4, '像素密度'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=70)
-        self.lc_device_info.InsertColumn(5, '分辨率'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=90)
-        self.lc_device_info.InsertColumn(6, 'IP'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=100)
-        self.lc_device_info.InsertColumn(7, 'Udid'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=120)
+        self.lc_device_info.InsertColumn(2, '系统版本'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=78)
+        self.lc_device_info.InsertColumn(3, '运行内存'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=78)
+        self.lc_device_info.InsertColumn(4, '像素密度'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=78)
+        self.lc_device_info.InsertColumn(5, '分辨率'.decode('utf8'), wx.LIST_FORMAT_CENTER,width=100)
+        self.lc_device_info.InsertColumn(6, 'IP'.decode('utf8'),wx.LIST_FORMAT_CENTER, width=120)
+        self.lc_device_info.InsertColumn(7, 'Udid'.decode('utf8'),wx.LIST_FORMAT_CENTER, width=120)
         vbox1_phone_info.Add(self.lc_device_info, 1, wx.EXPAND | wx.ALL, 3)
         self.event_ctrl.refresh_device_info()
 
@@ -58,7 +58,7 @@ class MyDialog(wx.Dialog):
                        (wx.Button(panl, 17, '全部安装'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
                        (wx.Button(panl, 18, '覆盖安装'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
                        (wx.Button(panl, 19, '清除数据'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
-                       (wx.Button(panl, 20, '发送数据'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
+                       (wx.Button(panl, 20, '发送文本'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
                        (wx.Button(panl, 21, '杀死进程'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
                        (wx.Button(panl, 22, '崩溃日志'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
                        (wx.Button(panl, 23, '当前包名'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
@@ -98,7 +98,7 @@ class MyDialog(wx.Dialog):
 class MyApp(wx.App):
 
     def OnInit(self):
-        dlg = MyDialog(None, -1, '辅助工具_jayzhen_v7.5'.decode("utf8"))
+        dlg = MyDialog(None, -1, 'ADB Tools V9.0 By Jayzhen'.decode("utf8"))
         dlg.ShowModal()
         dlg.Destroy()
         return True

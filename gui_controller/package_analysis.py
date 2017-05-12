@@ -1,4 +1,4 @@
-#-*- coding=utf-8 -*-
+# -*- coding=utf-8 -*-
 import os
 import re
 import datetime
@@ -9,6 +9,8 @@ from scriptUtils.utils import AndroidUtils
 '''
 主要处理安装和卸载手机上的应用
 '''
+
+
 class PackageController():
     def __init__(self):
         self.sno_list = DeviceInfo().get_devices()
@@ -22,11 +24,11 @@ class PackageController():
             print ">>>No device is connected"
         else:
             for sno in devices:
-                uninstall_one(sno,package_name)
+                self.uninstall_one(sno, package_name)
     '''
     指定设备，并指定包名进行应用的卸载
     '''
-    def uninstall_one(self,sno,package_name):
+    def uninstall_one(self, sno, package_name):
         uninstall_result = self.android.adb(sno,'uninstall %s'%package_name).stdout.read()
         if re.findall(r'Success',uninstall_result):
             print '>>>[%s] uninstall [%s] [SUCCESS]' %(sno,package_name)

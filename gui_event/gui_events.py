@@ -1,18 +1,16 @@
-#-*- coding=utf-8 -*-
+#!/usr/bin/env pythons
+# -*- coding:utf-8 -*-
+
 from gui_controller.package_analysis import PackageController
 from gui_controller.apk_controller import ApkController
 from gui_controller.device_info import DeviceInfo
 from gui_controller.download_apk import DownloadApk
 from gui_controller.scriptUtils.get_cpu_mem_info import AppPerformanceMonitor
-
-import easygui
-import re
-import time
 import wx
 
 
-class EventController():
-    def __init__(self,guiobj):
+class EventController(object):
+    def __init__(self, guiobj):
         self.guiobj = guiobj
         self.dinfoObj = DeviceInfo()
         self.deviceInfo = self.dinfoObj.get_devices_as_dict()
@@ -43,7 +41,7 @@ class EventController():
             for a in self.apk_list:
                 self.guiobj.lc_apk_info.InsertStringItem(num_items,a)
 
-    def do_download(self,event):
+    def do_download(self, event):
         downobj = DownloadApk()
         android_url  = "http://30.96.68.173/youku/android/"
         branch_versions = downobj.get_android_branch_verisons(android_url)
@@ -276,15 +274,16 @@ class EventController():
         elif res == wx.ID_CANCEL:
             iptxt_obj.Destroy()
 
-    def do_kill_process_event(self,event):
+    def do_kill_process_event(self, event):
         sno = self.get_device_items_choised_sno()
         self.dinfoObj.do_kill_process(sno,"com.youku.phone")
 
-    def get_app_permission_event(self,event):
+    def get_app_permission_event(self, event):
         sno = self.get_device_items_choised_sno()
-        self.dinfoObj.do_get_app_permission(sno,"com.youku.phone")
+        pkg = self.dinfoObj.current_package_name(sno)
+        self.dinfoObj.do_get_app_permission(sno, pkg)
 
-    def get_app_cpu_mem_event(self,event):
+    def get_app_cpu_mem_event(self, event):
         sno = self.get_device_items_choised_sno()
         if sno is None or sno == "" :
             return
@@ -301,10 +300,10 @@ class EventController():
         elif res == wx.ID_CANCEL:
             iptxt_obj.Destroy()
 
-    """
-    2017.02.15 @pm #向设备发送命令，并打印结果
-    """
     def seed_cmd_to_device(self,event):
+        """
+        2017.02.15 @pm #向设备发送命令，并打印结果
+        """
         sno = self.get_device_items_choised_sno()
         if sno is None or sno == "" :
             return

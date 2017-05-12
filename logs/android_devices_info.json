@@ -17,6 +17,15 @@
         "phone_model": "MI 3",
         "ram": "2GB"
     },
+    "4db89e4a": {
+        "dpi": "480",
+        "image_resolution": "1080x1920",
+        "ip": "192.168.51.63",
+        "os_version": "6.0.1",
+        "phone_brand": "Xiaomi",
+        "phone_model": "MI 5s",
+        "ram": "3GB"
+    },
     "84534ad1": {
         "dpi": "480",
         "image_resolution": "1080x1920",

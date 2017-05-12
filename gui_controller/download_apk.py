@@ -1,4 +1,4 @@
-#-*- coding=utf-8 -*-
+# -*- coding:utf-8 -*-
 from bs4 import BeautifulSoup
 import re
 import urlparse
@@ -7,7 +7,6 @@ import urllib
 import requests
 import requests.exceptions
 import os
-
 
 class DownloadApk():
     '''

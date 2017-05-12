@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import os
@@ -19,6 +20,7 @@ class AndroidUtils(object):
         self.system = None
         self.find_type = None
         self.command = "adb"
+
     def judgment_system_type(self):
         #判断系统类型，windows使用findstr，linux使用grep
         self.system = platform.system()
@@ -26,6 +28,7 @@ class AndroidUtils(object):
             self.find_type = "findstr"
         else:
             self.find_type = "grep"
+
     def judgment_system_environment_variables(self):
         self.judgment_system_type()
         #判断是否设置环境变量ANDROID_HOME
@@ -49,29 +52,27 @@ class AndroidUtils(object):
         cmd = "%s -s %s shell %s" %(self.command, serialno_num, str(args))
         return subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-
-
     #获取设备状态
-    def get_state(self,):
-        return os.popen("adb -s %s get-state" %serialno_num).read().strip()
+    def get_state(self,sno):
+        return os.popen("adb -s %s get-state" %sno).read().strip()
 
     #获取对应包名的pid
     def get_app_pid(self,pkg_name):
-        if system is "Windows":
-            string = shell("ps | findstr %s$" %pkg_name).stdout.read()
+        if self.system is "Windows":
+            string = self.shell("ps | findstr %s$" %pkg_name).stdout.read()
         else:
-            string = shell("ps | grep -w %s" %pkg_name).stdout.read()
+            string = self.shell("ps | grep -w %s" %pkg_name).stdout.read()
         if string == '':
             return "the process doesn't exist."
         pattern = re.compile(r"\d+")
         result = string.split(" ")
         result.remove(result[0])
-        return  pattern.findall(" ".join(result))[0]
+        return pattern.findall(" ".join(result))[0]
 
     #杀掉对应包名的进程；另一个方式使用adb shell am force-stop pkg_name
-    def kill_process(self,pkg_name):
-        pid = get_app_pid(pkg_name)
-        result = shell("kill %s" %str(pid)).stdout.read().split(": ")[-1]
+    def kill_process(self, pkg_name):
+        pid = self.get_app_pid(pkg_name)
+        result = self.shell("kill %s" %str(pid)).stdout.read().split(": ")[-1]
         if result != "":
             raise exception.SriptException("Operation not permitted or No such process")
 
@@ -111,10 +112,8 @@ class AndroidUtils(object):
         #Image Name                     PID Session Name        Session#    Mem Usage
         #========================= ======== ================ =========== ============
         #adb.exe                      10200 Console                    1      6,152 K
-
         process_name = os.popen('tasklist /FI "PID eq %s"' %pid).read().split()[-6]
         process_path = os.popen('wmic process where name="%s" get executablepath' %process_name).read().split("\r\n")[1]
-
         # #分割路径，得到进程所在文件夹名
         # name_list = process_path.split("\\")
         # del name_list[-1]
@@ -182,17 +181,18 @@ class AndroidUtils(object):
     2017.01.13 @pm #获取设备上当前应用的权限列表
                    #Windows下会将结果写入permission.txt文件中，其他系统打印在控制台
     """
-    def get_permission_list(self,sno,package_name):
+    def get_permission_list(self, sno, package_name):
         PATH = lambda p: os.path.abspath(p)
         permission_list = []
-        result_list = self.shell(sno,"dumpsys package %s | findstr android.permission" %package_name).stdout.readlines()
+        result_list = self.shell(sno,"dumpsys package %s | findstr android.permission" % package_name).stdout.readlines()
         for permission in result_list:
             permission_list.append(permission.strip())
-        pwd = os.path.join(os.getcwd(),"gui_controller\\scriptUtils")
+        pwd = os.path.join(os.getcwd(), "gui_controller\\scriptUtils")
         permission_json_file = file("%s\\permission.json"%pwd)
         file_content = json.load(permission_json_file)["PermissList"]
         name = "_".join(package_name.split("."))
-        f = open(PATH("%s\\%s_permission.txt" %(pwd,name)), "w")
+        res_path = os.path.join(os.getcwd(), "logs")
+        f = open(PATH("%s\\%s_permission.txt" % (res_path, name)), "w")
         f.write("package: %s\n\n" %package_name)
         for permission in permission_list:
             for permission_dict in file_content:

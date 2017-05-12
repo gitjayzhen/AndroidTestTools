@@ -3,7 +3,8 @@ import os
 import re
 import easygui
 
-class ApkController():
+
+class ApkController(object):
 
     '''
     初始化就先确认存放apk文件的路径。
@@ -11,7 +12,7 @@ class ApkController():
     def __init__(self):
         # absp = os.getcwd()
         absp = "C:\\"
-        apkp = os.path.join(absp,"apks")
+        apkp = os.path.join(absp, "apks")
         if not os.path.exists(apkp):
             os.mkdir(apkp)
         self.result_dir = apkp
@@ -22,12 +23,12 @@ class ApkController():
     def get_latest_apk(self,apklist):
         if apklist is None:
             return None
-        st = apklist.sort(key=lambda fn: os.path.getmtime(self.result_dir+"\\"+fn) if not os.path.isdir(self.result_dir+"\\"+fn) else 0)
+        st = apklist.sort(key=lambda fn: os.path.getmtime(self.result_dir+"\\"+fn) if not os.path.isdir(self.result_dir + "\\" + fn) else 0)
         #d=datetime.datetime.fromtimestamp(os.path.getmtime(result_dir+"\\"+apklist[-1]))
         #print d
         fname = apklist[-1]
         fpath = os.path.join(self.result_dir,fname)
-        return fpath,fname
+        return fpath, fname
     '''
     apklsit是获取当前文件夹下的所有apk文件，返回一个list。
     '''
@@ -70,12 +71,12 @@ class ApkController():
                 return pname
             else:
                 return None
-        except Exception,e:
+        except Exception, e:
             print "An error occurred environment variable on aapt"
     '''
     使用python的os中的remove方法来删除指定路径的文件，删除之前先判断是否存在该文件。
     '''
-    def delete_apk(self,apkpath):
+    def delete_apk(self, apkpath):
         ap = apkpath
         if os.path.exists(ap):
             os.remove(ap)
