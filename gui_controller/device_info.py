@@ -4,7 +4,7 @@ from __future__ import division
 import os
 import re
 import time
-from scriptUtils.utils import AndroidUtils
+from core.adb_utils import AndroidUtils
 
 
 class DeviceInfo():
@@ -74,7 +74,6 @@ class DeviceInfo():
             ip = self.get_device_wifi_ip(sno)
             image_resolution = self.get_device_distinguishability(sno)
             dpi = self.android.shell(sno, "getprop ro.sf.lcd_density").stdout.read()
-            proc_meninfo = self.android.shell(sno, "cat /proc/meminfo").stdout.readline()
             ram = self.get_device_ram(sno)
             return sno, phone_brand, phone_model, os_version, str(ram)+"GB", dpi.strip(), image_resolution, ip.strip()
         except Exception,e:
@@ -193,6 +192,7 @@ class DeviceInfo():
     """
     def get_device_ram(self, sno):
         try:
+            proc_meninfo = self.android.shell(sno, "cat /proc/meminfo").stdout.readline()
             mem_size = int(proc_meninfo.split(" ")[-2])
             ram = int(round(mem_size / (1024 * 1024)))
             """

@@ -3,9 +3,12 @@
 import os
 import json
 from device_info import DeviceInfo
+"""
+这个类中主要用于将手机的基础信息以json的形式保存到文档中
+"""
 
 
-class JsonParser():
+class FormatJsonParser(object):
     def __init__(self):
         self.json_obj = None
         self.json_file_path = os.path.join(os.path.dirname(os.getcwd()), "logs\\android_devices_info.json")
@@ -27,7 +30,8 @@ class JsonParser():
             json_obj = self.load_json(self.json_file_path)
             n = 0
             for k in dict_data:
-                if not json_obj.has_key(k):
+                # if not json_obj.has_key(k):
+                if k not in json_obj:
                     json_obj[k] = dict_data[k]
                     n += 1
             if n == 0:
@@ -39,8 +43,8 @@ class JsonParser():
             print e
         else:
             print "device info collect work has done, go to check json file"
-
-if __name__ == '__main__':
-    and_obj  = DeviceInfo()
-    json_paser =  JsonParser()
-    json_paser.put_key_value(and_obj.get_devices_as_dict())
+#
+# if __name__ == '__main__':
+#     and_obj  = DeviceInfo()
+#     json_paser =  JsonParser()
+#     json_paser.put_key_value(and_obj.get_devices_as_dict())

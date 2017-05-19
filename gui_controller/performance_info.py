@@ -3,7 +3,7 @@
 
 #需要安装pychartdir模块
 import string
-from utils import AndroidUtils
+from gui_controller.core.adb_utils import AndroidUtils
 from pychartdir import *
 
 class AppPerformanceMonitor():

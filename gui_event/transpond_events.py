@@ -1,12 +1,13 @@
 #!/usr/bin/env pythons
 # -*- coding:utf-8 -*-
 
-from gui_controller.package_analysis import PackageController
-from gui_controller.apk_controller import ApkController
+import wx
+
+from gui_controller.apk_getter import ApkController
 from gui_controller.device_info import DeviceInfo
 from gui_controller.download_apk import DownloadApk
-from gui_controller.scriptUtils.get_cpu_mem_info import AppPerformanceMonitor
-import wx
+from gui_controller.performance_info import AppPerformanceMonitor
+from gui_controller.package_analysis import PackageController
 
 
 class EventController(object):
@@ -276,7 +277,8 @@ class EventController(object):
 
     def do_kill_process_event(self, event):
         sno = self.get_device_items_choised_sno()
-        self.dinfoObj.do_kill_process(sno,"com.youku.phone")
+        pkg = self.dinfoObj.current_package_name(sno)
+        self.dinfoObj.do_kill_process(sno,pkg)
 
     def get_app_permission_event(self, event):
         sno = self.get_device_items_choised_sno()

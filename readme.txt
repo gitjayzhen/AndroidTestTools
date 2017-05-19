@@ -34,7 +34,7 @@ ADB环境变量设置(android sdk)：
     7.adb uninstall packagename  卸载文件
     8.adb shell pm list packages  显示已安装的所有安装包（包括系统和第三方）
     9.adb shell pm clear packagename  清除应用的数据（初始化）
-    10.aapt dunmp badging package_name 查看apk文件的信息
+    10.aapt dump badging package_name 查看apk文件的信息
     11.adb shell input text "string"
         输入很长的字符,特殊字符，使用adb shell input 的时候会出问题  例如 特殊字符“&”
         此时有两种方法：
@@ -51,6 +51,11 @@ ADB环境变量设置(android sdk)：
         这个在输入网址的时候比较有用，尤其是url中的参数
     12.adb shell cat cat /proc/meminfo 查看手机的运存大小（四舍五入：int(round(x))或int(2*x)/2+int(2*x)%2）
        adb shell busybox free
+    13.adb shell dumpsys dropbox | findstr data_app_crash 查看崩溃的日志
+       adb shell dumpsys dropbox --print  time 打印崩溃日志详细内容
+    14.adb shell screenrecord --time-limit %d /data/local/tmp/screenrecord.mp4 录制屏幕
+    15.adb shell /system/bin/screencap -p /sdcard/screenshot.png 截取屏幕
+    16.adb shell dumpsys package %s | findstr android.permission 查看应用程序所需系统的权限
 
 
 

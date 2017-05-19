@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-from gui_event.gui_events import EventController
+from gui_event.transpond_events import EventController
 import easygui
 import re
 import time
@@ -25,7 +25,7 @@ class MyDialog(wx.Dialog):
         vbox1_phone_info = wx.BoxSizer(wx.VERTICAL)
         vbox2_apk_info = wx.BoxSizer(wx.VERTICAL)
         vbox3_button = wx.BoxSizer(wx.VERTICAL)
-        grid_button= wx.GridSizer(3,6,5,5)
+        grid_button = wx.GridSizer(3,6,5,5)
 
         #window的上半部分：vbox2（lc_device_info）
         self.lc_device_info = wx.ListCtrl(self, -1, style=wx.LC_REPORT)
@@ -35,8 +35,8 @@ class MyDialog(wx.Dialog):
         self.lc_device_info.InsertColumn(3, '运行内存'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=78)
         self.lc_device_info.InsertColumn(4, '像素密度'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=78)
         self.lc_device_info.InsertColumn(5, '分辨率'.decode('utf8'), wx.LIST_FORMAT_CENTER,width=100)
-        self.lc_device_info.InsertColumn(6, 'IP'.decode('utf8'),wx.LIST_FORMAT_CENTER, width=120)
-        self.lc_device_info.InsertColumn(7, 'Udid'.decode('utf8'),wx.LIST_FORMAT_CENTER, width=120)
+        self.lc_device_info.InsertColumn(6, 'IP'.decode('utf8'), wx.LIST_FORMAT_CENTER, width=120)
+        self.lc_device_info.InsertColumn(7, 'Udid'.decode('utf8'), wx.LIST_FORMAT_CENTER, width=120)
         vbox1_phone_info.Add(self.lc_device_info, 1, wx.EXPAND | wx.ALL, 3)
         self.event_ctrl.refresh_device_info()
 
@@ -68,7 +68,7 @@ class MyDialog(wx.Dialog):
                        (wx.Button(panl, 27, 'kill 5037'.decode('utf8'),size=(80,35)), 0,wx.ALIGN_CENTER),
 ])
         panl.SetSizer(grid_button)
-        #为各个btn设置时间监听
+        #为各个btn设置事件监听
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_refresh, id=10)
         #self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_download, id=12)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_screenrecord_event, id=13)
@@ -83,10 +83,10 @@ class MyDialog(wx.Dialog):
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_input_text, id=20)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_kill_process_event, id=21)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_app_crash_log,id=22)
-        self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_current_app_package_name,id=23)
-        self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_current_app_activity,id=24)
-        self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_app_permission_event,id=25)
-        self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_app_cpu_mem_event,id=26)
+        self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_current_app_package_name, id=23)
+        self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_current_app_activity, id=24)
+        self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_app_permission_event, id=25)
+        self.Bind(wx.EVT_BUTTON, self.event_ctrl.get_app_cpu_mem_event, id=26)
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.reset_service_port, id=27)
         #将vbox2和hbox1添加到w_vbox中
         main_vbox.Add(vbox1_phone_info, 1, wx.EXPAND)

@@ -149,22 +149,22 @@ class AndroidUtils(object):
     2017.01.12 @pm 添加系统在4.4.x(sdk>19)以上手机可以进行截取屏幕视频动画的功能
                @func 判断系统->执行任务->获取结果
     """
-    def get_srceenrecord(self,sno,times,path):
+    def get_srceenrecord(self, sno, times, path):
         PATH = lambda p: os.path.abspath(p)
-        sdk = string.atoi(self.shell(sno,"getprop ro.build.version.sdk").stdout.read())
+        sdk = string.atoi(self.shell(sno, "getprop ro.build.version.sdk").stdout.read())
         try:
             times = string.atoi(times)
         except ValueError, e:
             print ">>>Value error because you enter value is not int type, use default 'times=20s'"
             times = int(20)
         if sdk >= 19:
-                self.shell(sno,"screenrecord --time-limit %d /data/local/tmp/screenrecord.mp4"%times).wait()
+                self.shell(sno, "screenrecord --time-limit %d /data/local/tmp/screenrecord.mp4"%times).wait()
                 print ">>>Get Video file..."
                 time.sleep(1.5)
                 path = PATH(path)
                 if not os.path.isdir(path):
                     os.makedirs(path)
-                self.adb(sno,"pull /data/local/tmp/screenrecord.mp4 %s"  %PATH("%s/%s.mp4" %(path, self.timestamp()))).wait()
+                self.adb(sno, "pull /data/local/tmp/screenrecord.mp4 %s" %PATH("%s/%s.mp4" % (path, self.timestamp()))).wait()
                 self.shell(sno, "rm /data/local/tmp/screenrecord.mp4")
                 print ">>>ok"
         else:
@@ -187,7 +187,7 @@ class AndroidUtils(object):
         result_list = self.shell(sno,"dumpsys package %s | findstr android.permission" % package_name).stdout.readlines()
         for permission in result_list:
             permission_list.append(permission.strip())
-        pwd = os.path.join(os.getcwd(), "gui_controller\\scriptUtils")
+        pwd = os.path.join(os.getcwd(), "gui_controller\\core")
         permission_json_file = file("%s\\permission.json"%pwd)
         file_content = json.load(permission_json_file)["PermissList"]
         name = "_".join(package_name.split("."))
