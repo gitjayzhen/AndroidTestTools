@@ -205,3 +205,10 @@ class DeviceInfo():
             print ">>> Get deivce rom size happend: %s" % str(e)
             ram = "X"
             return ram
+    """
+    20170521 jayzhen 实现断网
+    """
+    def disconnect_wifi(self, sno):
+        self.android.shell(sno, "svc wifi disable")
+    def connect_wifi(self, sno):
+        self.android.shell(sno, "svc wifi enable")

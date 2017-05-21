@@ -8,6 +8,7 @@ from gui_controller.device_info import DeviceInfo
 from gui_controller.download_apk import DownloadApk
 from gui_controller.performance_info import AppPerformanceMonitor
 from gui_controller.package_analysis import PackageController
+from gui_controller.dump_formatjson import FormatJsonParser
 
 
 class EventController(object):
@@ -17,6 +18,7 @@ class EventController(object):
         self.deviceInfo = self.dinfoObj.get_devices_as_dict()
         self.apkObj = ApkController()
         self.pctrObj = PackageController()
+        self.dumpjsoner = FormatJsonParser()
         #self.repObj = RequestData()
 
     def refresh_device_info(self):
@@ -319,3 +321,34 @@ class EventController(object):
         #正文待续。。。
         elif res == wx.ID_CANCEL:
             iptxt_obj.Destroy()
+
+    """
+    这里处理右键中菜单按钮的事件
+    """
+    def on_popup_item_selected(self, event):
+        # print event.GetId() #打印事件id，是右键菜单中的按钮事件id
+        item = self.guiobj.popupmenu.FindItemById(event.GetId())
+        text = item.GetText()
+        if "print" == text.strip():
+            choiseitemid = self.guiobj.lc_device_info.GetFocusedItem()
+            list_column =  self.guiobj.lc_device_info.GetColumnCount()
+            res = []
+            for i in range(list_column):
+                txt = self.guiobj.lc_device_info.GetItemText(choiseitemid, col=i)
+                res.append(txt)
+            print "device info : " + ':'.join(res)
+        elif "dump" == text.strip():
+            self.dumpjsoner.put_key_value(self.dinfoObj.get_devices_as_dict())
+
+        # wx.MessageBox("You selected item '%s'" % text)
+
+    """
+    将右键菜单显示出来
+    """
+    def show_popUp(self, event):
+        #pos = self.list_ctrl.GetPosition()
+        pos = event.GetPosition()
+        pos = self.guiobj.lc_device_info.ScreenToClient(pos)
+        self.guiobj.lc_device_info.PopupMenu(self.guiobj.popupmenu,pos)
+        #事件跳过后，原来的右键菜单就没法隐藏了
+        # event.Skip()

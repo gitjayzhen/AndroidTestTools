@@ -11,7 +11,7 @@ from device_info import DeviceInfo
 class FormatJsonParser(object):
     def __init__(self):
         self.json_obj = None
-        self.json_file_path = os.path.join(os.path.dirname(os.getcwd()), "logs\\android_devices_info.json")
+        self.json_file_path = os.path.join(os.getcwd(), "logs\\android_devices_info.json")
 
     def load_json(self, json_file_path):
         fin = open(json_file_path, "r")
@@ -35,7 +35,7 @@ class FormatJsonParser(object):
                     json_obj[k] = dict_data[k]
                     n += 1
             if n == 0:
-                print "数据存在"
+                print "这个手机设备的信息已存在"
                 return None
             with open(self.json_file_path, 'w+') as json_f_obj:
                 json_f_obj.write(json.dumps(json_obj, sort_keys=True, indent=4, separators=(',', ': '),encoding="gbk",ensure_ascii=True))
@@ -43,8 +43,3 @@ class FormatJsonParser(object):
             print e
         else:
             print "device info collect work has done, go to check json file"
-#
-# if __name__ == '__main__':
-#     and_obj  = DeviceInfo()
-#     json_paser =  JsonParser()
-#     json_paser.put_key_value(and_obj.get_devices_as_dict())

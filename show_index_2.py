@@ -6,18 +6,21 @@ import re
 import time
 import wx
 
-'''
+"""
 以dialog为window窗口展示界面（依然是继承wx.app）：
 1.main_vbox为整个窗口界面的垂直分布。
 2.显示在最顶层的是vbox1_phone_info，是垂直分布，它的内容是lc_device_info.
 3.显示在中间部分是vbox2_apk_info，是垂直分布，其中是lc_apk_info.
 4.显示在最下面的是vbox_button，是垂直分布，添加有panel，panel中添加grid_button
-'''
+"""
 
 
-class MyDialog(wx.Dialog):
+class GuiFrame(wx.Frame):
     def __init__(self, parent, id, title):
-        wx.Dialog.__init__(self, parent, id, title, pos=(500, 150), size=(750, 550), style=wx.DEFAULT_DIALOG_STYLE)
+        #只有一个关闭按钮，不能改变大小
+        wx.Frame.__init__(self, parent, id, title, pos=(500, 150), size=(760, 550),
+                          style=wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX)
+                          # style=wx.FULLSCREEN_NOSTATUSBAR | wx.DEFAULT_FRAME_STYLE)
         self.event_ctrl = EventController(self)
 
         main_vbox = wx.BoxSizer(wx.VERTICAL)#主界面
@@ -25,10 +28,10 @@ class MyDialog(wx.Dialog):
         vbox1_phone_info = wx.BoxSizer(wx.VERTICAL)
         vbox2_apk_info = wx.BoxSizer(wx.VERTICAL)
         vbox3_button = wx.BoxSizer(wx.VERTICAL)
-        grid_button = wx.GridSizer(3,6,5,5)
+        grid_button = wx.GridSizer(3, 6, 5, 5)
 
         #window的上半部分：vbox2（lc_device_info）
-        self.lc_device_info = wx.ListCtrl(self, -1, style=wx.LC_REPORT)
+        self.lc_device_info = wx.ListCtrl(self, -1, style=wx.LC_REPORT | wx.BORDER_SUNKEN)
         self.lc_device_info.InsertColumn(0, '品 牌'.decode('utf8'),wx.LIST_FORMAT_RIGHT,width= 78)
         self.lc_device_info.InsertColumn(1, '型 号'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=85)
         self.lc_device_info.InsertColumn(2, '系统版本'.decode('utf8'),wx.LIST_FORMAT_CENTER,width=78)
@@ -40,10 +43,21 @@ class MyDialog(wx.Dialog):
         vbox1_phone_info.Add(self.lc_device_info, 1, wx.EXPAND | wx.ALL, 3)
         self.event_ctrl.refresh_device_info()
 
+        #设置右键菜单
+        menuBar = wx.MenuBar()
+        self.SetMenuBar(menuBar)
+        self.popupmenu = wx.Menu()
+        for text in "dump print".split():
+            item = self.popupmenu.Append(-1, text)
+            self.Bind(wx.EVT_MENU, self.event_ctrl.on_popup_item_selected, item)
+            self.lc_device_info.Bind(wx.EVT_CONTEXT_MENU, self.event_ctrl.show_popUp)
+
+
         #中间部分显示apk文件目录
         self.lc_apk_info = wx.ListCtrl(self, -1, style=wx.LC_LIST|wx.LC_SORT_ASCENDING)
         vbox2_apk_info.Add(self.lc_apk_info, 1, wx.EXPAND | wx.ALL, 3)
         self.event_ctrl.refresh_apk_info()
+
         #最下面部分显示按钮
         panl = wx.Panel(self, -1, style=wx.SIMPLE_BORDER)
         vbox3_button.Add(panl, 1, wx.EXPAND | wx.ALL, 3)
@@ -95,13 +109,8 @@ class MyDialog(wx.Dialog):
         self.SetSizer(main_vbox)
 
 
-class MyApp(wx.App):
-
-    def OnInit(self):
-        dlg = MyDialog(None, -1, 'ADB Tools V9.0 By Jayzhen'.decode("utf8"))
-        dlg.ShowModal()
-        dlg.Destroy()
-        return True
-
-app = MyApp()
-app.MainLoop()
+if __name__ == "__main__":
+    app = wx.App()
+    s = GuiFrame(None, -1, 'ADB Tools V10.0 By Jayzhen'.decode("utf8"))
+    s.Show()
+    app.MainLoop()
