@@ -117,7 +117,9 @@ class DeviceInfo():
         if time_list is None or len(time_list) <=0:
             print ">>>No crash log to get"
             return None
-        log_file = "T://Exception_log_%s.txt" %self.android.timestamp()
+        root_path = os.getcwd()
+        file_path = os.path.join(root_path, "logs")
+        log_file = os.path.join(file_path, "Exception_log_%s.txt" %self.android.timestamp())
         f = open(log_file, "wb")
         for time in time_list:
             cash_log = self.android.shell(sno,"dumpsys dropbox --print %s" %time).stdout.read()
