@@ -214,3 +214,22 @@ class DeviceInfo():
         self.android.shell(sno, "svc wifi disable")
     def connect_wifi(self, sno):
         self.android.shell(sno, "svc wifi enable")
+    """
+    20170703 jayzhen 查看手机是否安装某一应用
+    """
+    def is_installed_package(self,sno,package_name):
+        had_package = self.android.shell(sno,'pm list packages |findstr "%s"'%package_name).stdout.read()
+        if re.search(package_name,had_package):
+            return True
+        else:
+            return False
+
+    """
+    20170703 jayzhen 查看指定的应用是否在运行
+    """
+    def is_running_package(self, sno, package_name):
+        had_package = self.android.shell(sno, 'ps |findstr "%s"' % package_name).stdout.read()
+        if re.findall(package_name, had_package):
+            return True
+        else:
+            return False

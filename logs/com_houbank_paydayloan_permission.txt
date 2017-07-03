@@ -1,0 +1,38 @@
+package: com.houbank.paydayloan
+
+android.permission.CALL_PHONE:
+  允许应用程序在您不介入的情况下拨打电话。恶意应用程序可借此在您的话费单上产生意外通话费。请注意，此权限不允许应用程序拨打紧急呼救电话。
+android.permission.INTERNET:
+  允许程序访问网络.
+android.permission.ACCESS_NETWORK_STATE:
+  允许应用程序查看所有网络的状态。
+android.permission.READ_CONTACTS:
+  允许应用程序读取您手机上存储的所有联系人（地址）数据。恶意应用程序可借此将您的数据发送给其他人。
+android.permission.CAMERA:
+  允许应用程序使用相机拍照，这样应用程序可随时收集进入相机镜头的图像。
+android.permission.READ_SMS:
+  允许应用程序读取您的手机或 SIM 卡中存储的短信。恶意应用程序可借此读取您的机密信息。
+android.permission.BATTERY_STATS:
+  允许修改收集的电池使用情况统计信息。普通应用程序不能使用此权限。
+android.permission.WRITE_SETTINGS:
+  允许应用程序修改系统设置方面的数据。恶意应用程序可借此破坏您的系统配置。
+android.permission.GET_TASKS:
+  允许应用程序检索有关当前和最近运行的任务的信息。恶意应用程序可借此发现有关其他应用程序的保密信息。
+android.permission.ACCESS_COARSE_LOCATION:
+  访问大概的位置源(例如蜂窝网络数据库)以确定手机的大概位置(如果可以)。恶意应用程序可借此确定您所处的大概位置。
+android.permission.ACCESS_FINE_LOCATION:
+  访问精准的位置源，例如手机上的全球定位系统(如果有)。恶意应用程序可能会借此确定您所处的位置，并可能消耗额外的电池电量。
+android.permission.ACCESS_WIFI_STATE:
+  允许应用程序查看有关 WLAN 状态的信息。
+android.permission.CHANGE_WIFI_STATE:
+  允许应用程序连接到 WLAN 接入点以及与 WLAN 接入点断开连接，并对配置的 WLAN 网络进行更改。
+android.permission.READ_PHONE_STATE:
+  允许应用程序访问设备的手机功能。有此权限的应用程序可确定此手机的号码和序列号，是否正在通话，以及对方的号码等。
+android.permission.WRITE_EXTERNAL_STORAGE:
+  允许应用程序写入SD卡。
+android.permission.ACCESS_LOCATION_EXTRA_COMMANDS:
+  访问额外的位置信息提供程序命令。恶意应用程序可借此干扰 GPS 或其他位置源的正常工作。
+android.permission.BLUETOOTH:
+  允许应用程序查看本地蓝牙手机的配置，以及建立或接受与配对设备的连接。
+android.permission.BLUETOOTH_ADMIN:
+  允许应用程序配置本地蓝牙手机，以及发现远程设备并与其配对。

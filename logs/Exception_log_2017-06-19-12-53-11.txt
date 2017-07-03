@@ -1,0 +1,211 @@
+Drop box contents: 16 entries
+Searching for: 2017-06-16 10:42:51
+
+========================================
+2017-06-16 10:42:51 data_app_crash (text, 1137 bytes)
+Process: com.houbank.paydayloan
+Flags: 0x38c8be46
+Package: com.houbank.paydayloan v1 (1.0)
+Build: Xiaomi/capricorn/capricorn:6.0.1/MXB48T/V8.5.2.0.MAGCNED:user/release-keys
+
+java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.Object android.content.Context.getSystemService(java.lang.String)' on a null object reference
+	at com.houbank.paydayloan.utils.NetworkUtil.isNetworkAvailable(NetworkUtil.java:95)
+	at com.houbank.paydayloan.module.main.StrategyFragment$3.onPageFinished(StrategyFragment.java:111)
+	at com.android.webview.chromium.WebViewContentsClientAdapter.onPageFinished(WebViewContentsClientAdapter.java:545)
+	at org.chromium.android_webview.AwContentsClientCallbackHelper$MyHandler.handleMessage(AwContentsClientCallbackHelper.java:201)
+	at android.os.Handler.dispatchMessage(Handler.java:102)
+	at android.os.Looper.loop(Looper.java:154)
+	at android.app.ActivityThread.main(ActivityThread.java:5544)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:739)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:629)
+
+Drop box contents: 16 entries
+Searching for: 2017-06-16 10:56:26
+
+========================================
+2017-06-16 10:56:26 data_app_crash (text, 1425 bytes)
+Process: com.houbank.paydayloan
+Flags: 0x38e8be46
+Package: com.houbank.paydayloan v1 (1.0)
+Build: Xiaomi/capricorn/capricorn:6.0.1/MXB48T/V8.5.2.0.MAGCNED:user/release-keys
+
+android.util.AndroidRuntimeException: Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag. Is this really what you want?
+	at android.app.ContextImpl.startActivity(ContextImpl.java:682)
+	at android.app.ContextImpl.startActivity(ContextImpl.java:669)
+	at android.content.ContextWrapper.startActivity(ContextWrapper.java:341)
+	at com.houbank.paydayloan.http.response.ResponseHandler.handleResponseApiError(ResponseHandler.java:66)
+	at com.houbank.paydayloan.http.response.ResponseHandler.handleApiError(ResponseHandler.java:42)
+	at com.houbank.paydayloan.http.response.BaseResponseHandler.success(BaseResponseHandler.java:53)
+	at com.houbank.paydayloan.http.response.BaseResponseHandler.success(BaseResponseHandler.java:19)
+	at retrofit.CallbackRunnable$1.run(CallbackRunnable.java:45)
+	at android.os.Handler.handleCallback(Handler.java:742)
+	at android.os.Handler.dispatchMessage(Handler.java:95)
+	at android.os.Looper.loop(Looper.java:154)
+	at android.app.ActivityThread.main(ActivityThread.java:5544)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:739)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:629)
+
+Drop box contents: 16 entries
+Searching for: 2017-06-16 10:56:27
+
+========================================
+2017-06-16 10:56:27 data_app_crash (text, 1425 bytes)
+Process: com.houbank.paydayloan
+Flags: 0x38c8be46
+Package: com.houbank.paydayloan v1 (1.0)
+Build: Xiaomi/capricorn/capricorn:6.0.1/MXB48T/V8.5.2.0.MAGCNED:user/release-keys
+
+android.util.AndroidRuntimeException: Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag. Is this really what you want?
+	at android.app.ContextImpl.startActivity(ContextImpl.java:682)
+	at android.app.ContextImpl.startActivity(ContextImpl.java:669)
+	at android.content.ContextWrapper.startActivity(ContextWrapper.java:341)
+	at com.houbank.paydayloan.http.response.ResponseHandler.handleResponseApiError(ResponseHandler.java:66)
+	at com.houbank.paydayloan.http.response.ResponseHandler.handleApiError(ResponseHandler.java:42)
+	at com.houbank.paydayloan.http.response.BaseResponseHandler.success(BaseResponseHandler.java:53)
+	at com.houbank.paydayloan.http.response.BaseResponseHandler.success(BaseResponseHandler.java:19)
+	at retrofit.CallbackRunnable$1.run(CallbackRunnable.java:45)
+	at android.os.Handler.handleCallback(Handler.java:742)
+	at android.os.Handler.dispatchMessage(Handler.java:95)
+	at android.os.Looper.loop(Looper.java:154)
+	at android.app.ActivityThread.main(ActivityThread.java:5544)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:739)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:629)
+
+Drop box contents: 16 entries
+Searching for: 2017-06-16 11:09:23
+
+========================================
+2017-06-16 11:09:23 data_app_crash (text, 1425 bytes)
+Process: com.houbank.paydayloan
+Flags: 0x38e8be46
+Package: com.houbank.paydayloan v1 (1.0)
+Build: Xiaomi/capricorn/capricorn:6.0.1/MXB48T/V8.5.2.0.MAGCNED:user/release-keys
+
+android.util.AndroidRuntimeException: Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag. Is this really what you want?
+	at android.app.ContextImpl.startActivity(ContextImpl.java:682)
+	at android.app.ContextImpl.startActivity(ContextImpl.java:669)
+	at android.content.ContextWrapper.startActivity(ContextWrapper.java:341)
+	at com.houbank.paydayloan.http.response.ResponseHandler.handleResponseApiError(ResponseHandler.java:66)
+	at com.houbank.paydayloan.http.response.ResponseHandler.handleApiError(ResponseHandler.java:42)
+	at com.houbank.paydayloan.http.response.BaseResponseHandler.success(BaseResponseHandler.java:53)
+	at com.houbank.paydayloan.http.response.BaseResponseHandler.success(BaseResponseHandler.java:19)
+	at retrofit.CallbackRunnable$1.run(CallbackRunnable.java:45)
+	at android.os.Handler.handleCallback(Handler.java:742)
+	at android.os.Handler.dispatchMessage(Handler.java:95)
+	at android.os.Looper.loop(Looper.java:154)
+	at android.app.ActivityThread.main(ActivityThread.java:5544)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:739)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:629)
+
+Drop box contents: 16 entries
+Searching for: 2017-06-16 11:10:21
+
+========================================
+2017-06-16 11:10:21 data_app_crash (text, 1425 bytes)
+Process: com.houbank.paydayloan
+Flags: 0x38c8be46
+Package: com.houbank.paydayloan v1 (1.0)
+Build: Xiaomi/capricorn/capricorn:6.0.1/MXB48T/V8.5.2.0.MAGCNED:user/release-keys
+
+android.util.AndroidRuntimeException: Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag. Is this really what you want?
+	at android.app.ContextImpl.startActivity(ContextImpl.java:682)
+	at android.app.ContextImpl.startActivity(ContextImpl.java:669)
+	at android.content.ContextWrapper.startActivity(ContextWrapper.java:341)
+	at com.houbank.paydayloan.http.response.ResponseHandler.handleResponseApiError(ResponseHandler.java:66)
+	at com.houbank.paydayloan.http.response.ResponseHandler.handleApiError(ResponseHandler.java:42)
+	at com.houbank.paydayloan.http.response.BaseResponseHandler.success(BaseResponseHandler.java:53)
+	at com.houbank.paydayloan.http.response.BaseResponseHandler.success(BaseResponseHandler.java:19)
+	at retrofit.CallbackRunnable$1.run(CallbackRunnable.java:45)
+	at android.os.Handler.handleCallback(Handler.java:742)
+	at android.os.Handler.dispatchMessage(Handler.java:95)
+	at android.os.Looper.loop(Looper.java:154)
+	at android.app.ActivityThread.main(ActivityThread.java:5544)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:739)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:629)
+
+Drop box contents: 16 entries
+Searching for: 2017-06-16 11:11:08
+
+========================================
+2017-06-16 11:11:08 data_app_crash (text, 1425 bytes)
+Process: com.houbank.paydayloan
+Flags: 0x38c8be46
+Package: com.houbank.paydayloan v1 (1.0)
+Build: Xiaomi/capricorn/capricorn:6.0.1/MXB48T/V8.5.2.0.MAGCNED:user/release-keys
+
+android.util.AndroidRuntimeException: Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag. Is this really what you want?
+	at android.app.ContextImpl.startActivity(ContextImpl.java:682)
+	at android.app.ContextImpl.startActivity(ContextImpl.java:669)
+	at android.content.ContextWrapper.startActivity(ContextWrapper.java:341)
+	at com.houbank.paydayloan.http.response.ResponseHandler.handleResponseApiError(ResponseHandler.java:66)
+	at com.houbank.paydayloan.http.response.ResponseHandler.handleApiError(ResponseHandler.java:42)
+	at com.houbank.paydayloan.http.response.BaseResponseHandler.success(BaseResponseHandler.java:53)
+	at com.houbank.paydayloan.http.response.BaseResponseHandler.success(BaseResponseHandler.java:19)
+	at retrofit.CallbackRunnable$1.run(CallbackRunnable.java:45)
+	at android.os.Handler.handleCallback(Handler.java:742)
+	at android.os.Handler.dispatchMessage(Handler.java:95)
+	at android.os.Looper.loop(Looper.java:154)
+	at android.app.ActivityThread.main(ActivityThread.java:5544)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:739)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:629)
+
+Drop box contents: 16 entries
+Searching for: 2017-06-16 11:47:15
+
+========================================
+2017-06-16 11:47:15 data_app_crash (text, 1425 bytes)
+Process: com.houbank.paydayloan
+Flags: 0x38c8be46
+Package: com.houbank.paydayloan v1 (1.0)
+Build: Xiaomi/capricorn/capricorn:6.0.1/MXB48T/V8.5.2.0.MAGCNED:user/release-keys
+
+android.util.AndroidRuntimeException: Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag. Is this really what you want?
+	at android.app.ContextImpl.startActivity(ContextImpl.java:682)
+	at android.app.ContextImpl.startActivity(ContextImpl.java:669)
+	at android.content.ContextWrapper.startActivity(ContextWrapper.java:341)
+	at com.houbank.paydayloan.http.response.ResponseHandler.handleResponseApiError(ResponseHandler.java:66)
+	at com.houbank.paydayloan.http.response.ResponseHandler.handleApiError(ResponseHandler.java:42)
+	at com.houbank.paydayloan.http.response.BaseResponseHandler.success(BaseResponseHandler.java:53)
+	at com.houbank.paydayloan.http.response.BaseResponseHandler.success(BaseResponseHandler.java:19)
+	at retrofit.CallbackRunnable$1.run(CallbackRunnable.java:45)
+	at android.os.Handler.handleCallback(Handler.java:742)
+	at android.os.Handler.dispatchMessage(Handler.java:95)
+	at android.os.Looper.loop(Looper.java:154)
+	at android.app.ActivityThread.main(ActivityThread.java:5544)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:739)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:629)
+
+Drop box contents: 16 entries
+Searching for: 2017-06-16 14:37:00
+
+========================================
+2017-06-16 14:37:00 data_app_crash (text, 1425 bytes)
+Process: com.houbank.paydayloan
+Flags: 0x38e8be46
+Package: com.houbank.paydayloan v1 (1.0)
+Build: Xiaomi/capricorn/capricorn:6.0.1/MXB48T/V8.5.2.0.MAGCNED:user/release-keys
+
+android.util.AndroidRuntimeException: Calling startActivity() from outside of an Activity  context requires the FLAG_ACTIVITY_NEW_TASK flag. Is this really what you want?
+	at android.app.ContextImpl.startActivity(ContextImpl.java:682)
+	at android.app.ContextImpl.startActivity(ContextImpl.java:669)
+	at android.content.ContextWrapper.startActivity(ContextWrapper.java:341)
+	at com.houbank.paydayloan.http.response.ResponseHandler.handleResponseApiError(ResponseHandler.java:66)
+	at com.houbank.paydayloan.http.response.ResponseHandler.handleApiError(ResponseHandler.java:42)
+	at com.houbank.paydayloan.http.response.BaseResponseHandler.success(BaseResponseHandler.java:53)
+	at com.houbank.paydayloan.http.response.BaseResponseHandler.success(BaseResponseHandler.java:19)
+	at retrofit.CallbackRunnable$1.run(CallbackRunnable.java:45)
+	at android.os.Handler.handleCallback(Handler.java:742)
+	at android.os.Handler.dispatchMessage(Handler.java:95)
+	at android.os.Looper.loop(Looper.java:154)
+	at android.app.ActivityThread.main(ActivityThread.java:5544)
+	at java.lang.reflect.Method.invoke(Native Method)
+	at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:739)
+	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:629)
+

@@ -298,9 +298,20 @@ class EventController(object):
             txt =  iptxt_obj.GetValue().encode("utf-8")
             if txt is None or txt == "":
                 return
-            apm = AppPerformanceMonitor(sno,txt,"com.youku.phone")
-            data = apm.top()
-            apm.line_chart(data)
+
+            pkg_obj = wx.TextEntryDialog(None, 'in the following', caption="app package name",
+                                           style=wx.OK | wx.CANCEL | wx.CENTRE)
+            pkg_obj.SetValue("")
+            result = pkg_obj.ShowModal()
+            if result == wx.ID_OK:
+                txt = iptxt_obj.GetValue().encode("utf-8")
+                if txt is None or txt == "":
+                    return
+                apm = AppPerformanceMonitor(sno,txt,txt)
+                data = apm.top()
+                apm.line_chart(data)
+            elif result == wx.ID_CANCEL:
+                pkg_obj.Destroy()
         elif res == wx.ID_CANCEL:
             iptxt_obj.Destroy()
 
