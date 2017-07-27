@@ -1,6 +1,6 @@
 #这两个目录下的改动不上传
-gui_thread/
-gui_view/
+logs/
+src/gui_test/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

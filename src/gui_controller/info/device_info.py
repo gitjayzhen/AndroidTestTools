@@ -1,12 +1,23 @@
 #!/usr/bin/env python
-# -*-coding=utf8 -*-
+# -*- encoding: utf-8  -*-
+
+""" 
+@version: v1.0 
+@author: jayzhen 
+@license: Apache Licence  
+@contact: jayzhen_testing@163.com 
+@site: http://blog.csdn.net/u013948858 
+@software: PyCharm 
+@time: 2017/7/27 23:29 
+"""
 from __future__ import division
 import os
 import re
 import time
-from core.adb_utils import AndroidUtils
+import wx
+from src.gui_controller.core.adb_utils import AndroidUtils
 
-
+# TODO(jayzhen) 尽量将这里的adb和shell放到core/adb_utils.py中
 class DeviceInfo():
     def __init__(self):
         self.android = AndroidUtils()
@@ -25,7 +36,7 @@ class DeviceInfo():
             info = {}
             lists = self.get_devices()
             if not lists or len(lists) <= 0:
-                print ">>>NO Device connected"
+                wx.LogMessage("NO Device connected")
                 return None
             for sno in lists:
                 sno,phone_brand,phone_model,os_version,ram,dpi,image_resolution,ip = self.get_info(sno)
@@ -66,7 +77,7 @@ class DeviceInfo():
                 if re.search(r"ro\.build\.version\.release",res):
                     os_version = res.split('=')[-1].strip()
                 #手机型号
-                elif re.search(r"ro\.product\.model",res):
+                elif re.search(r"ro\.product\.model",res) :
                     phone_model = res.split('=')[-1].strip()
                 #手机品牌
                 elif re.search(r"ro\.product\.brand",res):
@@ -75,9 +86,9 @@ class DeviceInfo():
             image_resolution = self.get_device_distinguishability(sno)
             dpi = self.android.shell(sno, "getprop ro.sf.lcd_density").stdout.read()
             ram = self.get_device_ram(sno)
-            return sno, phone_brand, phone_model, os_version, str(ram)+"GB", dpi.strip(), image_resolution, ip.strip()
+            return sno, str(phone_brand), str(phone_model), str(os_version), str(ram)+"GB", str(dpi.strip()), str(image_resolution), str(ip.strip())
         except Exception,e:
-            print ">>> Get device info happend ERROR :"+ str(e)
+            wx.LogMessage("Get device info happend ERROR :"+ str(e))
             return None
 
     def input_text(self,sno,text):
@@ -91,17 +102,22 @@ class DeviceInfo():
                 else:
                     text_list[i-1] = text_list[i-1] + "\\"
         seed = ''.join(text_list)
-        self.android.shell(sno, 'input text "%s"'%seed)
+        self.android.shell(sno, 'input text "%s"' % seed)
 
     def reboot_device(self, sno):
         self.android.adb(sno, "reboot")
-
+    """
+    2017.07.13 @pm 修改导入文件的路径
+    """
     def capture_window(self,sno):
+        wx.LogMessage("begin to capture device window as a picture")
+        desktop_path = self.android.get_win_destop_path()
         self.android.shell(sno, "rm /sdcard/screenshot.png").wait()
         self.android.shell(sno, "/system/bin/screencap -p /sdcard/screenshot.png").wait()
-        print ">>>截取屏幕成功，在桌面查看文件。"
         c_time = time.strftime("%Y_%m_%d_%H-%M-%S")
-        self.android.adb(sno, 'pull /sdcard/screenshot.png T:\\%s.png"'%c_time).wait()
+        file_path = os.path.join(desktop_path, '%s.png"'%c_time)
+        self.android.adb(sno, 'pull /sdcard/screenshot.png %s' % file_path).wait()
+        wx.LogMessage("do capture successed, and check file on windows desktop")
 
     def get_crash_log(self,sno):
         # 获取app发生crash的时间列表
@@ -115,7 +131,7 @@ class DeviceInfo():
             time_list.append(" ".join(temp_time))
 
         if time_list is None or len(time_list) <=0:
-            print ">>>No crash log to get"
+            wx.LogMessage("No crash log to get")
             return None
         root_path = os.getcwd()
         file_path = os.path.join(root_path, "logs")
@@ -125,27 +141,28 @@ class DeviceInfo():
             cash_log = self.android.shell(sno,"dumpsys dropbox --print %s" %time).stdout.read()
             f.write(cash_log)
         f.close()
-        print ">>>check local file"
+        wx.LogMessage("check local file")
 
     def current_package_name(self,sno):
         if sno is None or sno == "":
-            print ">>>Device_items No Choice Device"
+            wx.LogMessage("Device_items No Choice Device")
             return
         current_pkg = self.android.get_current_package_name(sno)
-        print ">>>package name of current app is [" + current_pkg + "]"
+        wx.LogMessage("package name of current app is [" + current_pkg + "]")
         return current_pkg
 
     def current_activity(self, sno):
         if sno is None or sno == "":
-            print ">>>Device_items No Choice Device"
+            wx.LogMessage("Device_items No Choice Device")
             return
-        print ">>>activity fo current app is [" + self.android.get_current_activity(sno)+"]"
+        wx.LogMessage( "activity fo current app is [" + self.android.get_current_activity(sno)+"]")
 
     def win_serivce_port_restart(self):
         self.android.stop_and_restart_5037()
 
     def screenrecord(self, sno, times):
-        self.android.get_srceenrecord(sno, times, "T:\\")
+        desktop_path = self.android.get_win_destop_path()
+        self.android.get_srceenrecord(sno, times, desktop_path)
 
     def do_kill_process(self, sno, package):
         self.android.execute_kill_specified_process(sno,package)
@@ -204,7 +221,7 @@ class DeviceInfo():
             """
             return ram
         except IndexError, e:
-            print ">>> Get deivce rom size happend: %s" % str(e)
+            wx.LogMessage("Get deivce rom size happend: %s" % str(e))
             ram = "X"
             return ram
     """
