@@ -13,9 +13,8 @@
 
 import json
 import os
-
 import wx
-
+from src.gui_controller.utils.path_getter import FilePathGetter
 """
 这个类中主要用于将手机的基础信息以json的形式保存到文档中
 """
@@ -24,7 +23,8 @@ import wx
 class FormatJsonParser(object):
     def __init__(self):
         self.json_obj = None
-        self.json_file_path = os.path.join(os.getcwd(), "logs\\android_devices_info.json")
+        self.fp = FilePathGetter()
+        self.json_file_path = self.fp.get_devices_info_file_path()
 
     def load_json(self, json_file_path):
         fin = open(json_file_path, "r")

@@ -44,6 +44,15 @@
         "phone_model": "OPPO R9 Plusm A",
         "ram": "4GB"
     },
+    "8DF6R17327000259": {
+        "dpi": "560",
+        "image_resolution": "1440x2560",
+        "ip": "192.168.19.148",
+        "os_version": "7.0",
+        "phone_brand": "Huawei",
+        "phone_model": "generic_a15",
+        "ram": "4GB"
+    },
     "90d1894b7d62": {
         "dpi": "320",
         "image_resolution": "720x1280",

@@ -12,8 +12,8 @@
 """
 import os
 import re
-import easygui
 import wx
+# import easygui
 
 
 class ApkController(object):
@@ -35,8 +35,8 @@ class ApkController(object):
         if apklist is None:
             return None
         st = apklist.sort(key=lambda fn: os.path.getmtime(self.result_dir+"\\"+fn) if not os.path.isdir(self.result_dir + "\\" + fn) else 0)
-        #d=datetime.datetime.fromtimestamp(os.path.getmtime(result_dir+"\\"+apklist[-1]))
-        #print d
+        # d=datetime.datetime.fromtimestamp(os.path.getmtime(result_dir+"\\"+apklist[-1]))
+        # print d
         fname = apklist[-1]
         fpath = os.path.join(self.result_dir,fname)
         return fpath, fname
@@ -57,10 +57,12 @@ class ApkController(object):
         try:
             abspath = os.path.join(self.result_dir,apkName)
             if not os.path.exists(abspath):
-                easygui.msgbox('>>>None apk file to REMOVE')
+                # easygui.msgbox('>>>None apk file to REMOVE')
+                wx.MessageDialog(None, 'None apk file to REMOVE', style=wx.OK | wx.CANCEL | wx.CENTRE).ShowModal()
                 return None
-        except TypeError,e:
-            easygui.msgbox('You cant choices one apk file for install ,so apkAbsPath happend TypeError')
+        except TypeError, e:
+            # easygui.msgbox('You cant choices one apk file for install ,so apkAbsPath happend TypeError')
+            wx.MessageDialog(None, 'You cant choices one apk file for install ,so apkAbsPath happend TypeError', style=wx.OK | wx.CANCEL | wx.CENTRE).ShowModal()
             return None
         return abspath
     '''

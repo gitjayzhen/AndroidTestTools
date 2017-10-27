@@ -16,11 +16,15 @@ import re
 import time
 import wx
 from src.gui_controller.core.adb_utils import AndroidUtils
+from src.gui_controller.utils.path_getter import FilePathGetter
+
 
 # TODO(jayzhen) 尽量将这里的adb和shell放到core/adb_utils.py中
-class DeviceInfo():
+class DeviceInfo(object):
     def __init__(self):
         self.android = AndroidUtils()
+        self.fp = FilePathGetter()
+
     '''
         获取连接上电脑的手机设备，返回一个设备名的list
     '''
@@ -87,7 +91,7 @@ class DeviceInfo():
             dpi = self.android.shell(sno, "getprop ro.sf.lcd_density").stdout.read()
             ram = self.get_device_ram(sno)
             return sno, str(phone_brand), str(phone_model), str(os_version), str(ram)+"GB", str(dpi.strip()), str(image_resolution), str(ip.strip())
-        except Exception,e:
+        except Exception, e:
             wx.LogMessage("Get device info happend ERROR :"+ str(e))
             return None
 
@@ -133,9 +137,7 @@ class DeviceInfo():
         if time_list is None or len(time_list) <=0:
             wx.LogMessage("No crash log to get")
             return None
-        root_path = os.getcwd()
-        file_path = os.path.join(root_path, "logs")
-        log_file = os.path.join(file_path, "Exception_log_%s.txt" %self.android.timestamp())
+        log_file = self.fp.get_exception_logs_file_path("Exception_log_%s.txt" %self.android.timestamp())
         f = open(log_file, "wb")
         for time in time_list:
             cash_log = self.android.shell(sno,"dumpsys dropbox --print %s" %time).stdout.read()
@@ -234,9 +236,9 @@ class DeviceInfo():
     """
     20170703 jayzhen 查看手机是否安装某一应用
     """
-    def is_installed_package(self,sno,package_name):
-        had_package = self.android.shell(sno,'pm list packages |findstr "%s"'%package_name).stdout.read()
-        if re.search(package_name,had_package):
+    def is_installed_package(self, sno, package_name):
+        had_package = self.android.shell(sno, 'pm list packages |findstr "%s"' % package_name).stdout.read()
+        if re.search(package_name, had_package):
             return True
         else:
             return False

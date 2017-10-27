@@ -14,7 +14,7 @@
 import threading
 
 import wx
-
+from src.gui_threads.threading_container import GuiThreads
 from src.gui_controller.core.func_deprecated import deprecated
 from src.gui_controller.info.cpu_mem_info import AppPerformanceMonitor
 from src.gui_controller.info.device_info import DeviceInfo
@@ -33,6 +33,7 @@ class EventController(object):
         self.pctrObj = PackageController()
         self.dumpjsoner = FormatJsonParser()
         self.t = None
+        self.thread_leader = GuiThreads()
         #self.repObj = RequestData()
 
     def refresh_device_info(self):
@@ -40,14 +41,14 @@ class EventController(object):
         if self.deviceInfo is not None:
             for d in self.deviceInfo:
                 num_items = self.guiobj.lc_device_info.GetItemCount()
-                self.guiobj.lc_device_info.InsertStringItem(num_items, self.deviceInfo[d]["phone_brand"],wx.LIST_FORMAT_RIGHT)
-                self.guiobj.lc_device_info.SetStringItem(num_items,1, self.deviceInfo[d]["phone_model"],wx.LIST_FORMAT_CENTER)
-                self.guiobj.lc_device_info.SetStringItem(num_items,2, self.deviceInfo[d]["os_version"],wx.LIST_FORMAT_CENTER)
-                self.guiobj.lc_device_info.SetStringItem(num_items,3, self.deviceInfo[d]["ram"],wx.LIST_FORMAT_CENTER)
-                self.guiobj.lc_device_info.SetStringItem(num_items,4, self.deviceInfo[d]["dpi"],wx.LIST_FORMAT_CENTER)
-                self.guiobj.lc_device_info.SetStringItem(num_items,5, self.deviceInfo[d]["image_resolution"],wx.LIST_FORMAT_CENTER)
-                self.guiobj.lc_device_info.SetStringItem(num_items,6, self.deviceInfo[d]["ip"] ,wx.LIST_FORMAT_CENTER)
-                self.guiobj.lc_device_info.SetStringItem(num_items,7, d ,wx.LIST_FORMAT_CENTER)
+                self.guiobj.lc_device_info.InsertStringItem(num_items, self.deviceInfo[d]["phone_brand"], wx.LIST_FORMAT_RIGHT)
+                self.guiobj.lc_device_info.SetStringItem(num_items, 1, self.deviceInfo[d]["phone_model"], wx.LIST_FORMAT_CENTER)
+                self.guiobj.lc_device_info.SetStringItem(num_items, 2, self.deviceInfo[d]["os_version"], wx.LIST_FORMAT_CENTER)
+                self.guiobj.lc_device_info.SetStringItem(num_items, 3, self.deviceInfo[d]["ram"], wx.LIST_FORMAT_CENTER)
+                self.guiobj.lc_device_info.SetStringItem(num_items, 4, self.deviceInfo[d]["dpi"], wx.LIST_FORMAT_CENTER)
+                self.guiobj.lc_device_info.SetStringItem(num_items, 5, self.deviceInfo[d]["image_resolution"], wx.LIST_FORMAT_CENTER)
+                self.guiobj.lc_device_info.SetStringItem(num_items, 6, self.deviceInfo[d]["ip"], wx.LIST_FORMAT_CENTER)
+                self.guiobj.lc_device_info.SetStringItem(num_items, 7, d, wx.LIST_FORMAT_CENTER)
 
     def refresh_apk_info(self):
         self.apk_list = self.apkObj.apk_list()
@@ -56,15 +57,15 @@ class EventController(object):
             if self.guiobj.lc_apk_info.GetItemCount():
                 self.guiobj.lc_apk_info.ClearAll()
             for a in self.apk_list:
-                self.guiobj.lc_apk_info.InsertStringItem(num_items,a)
+                self.guiobj.lc_apk_info.InsertStringItem(num_items, a)
 
     def do_download(self, event):
         downobj = DownloadApk()
-        android_url  = "http://30.96.68.173/youku/android/"
+        android_url = "http://30.96.68.173/youku/android/"
         branch_versions = downobj.get_android_branch_verisons(android_url)
         if branch_versions is None or len(branch_versions) <0:
             return
-        dlg = wx.SingleChoiceDialog(None,'Wil download latest apk file with you select version','Apk branch version',branch_versions)
+        dlg = wx.SingleChoiceDialog(None, 'Wil download latest apk file with you select version','Apk branch version',branch_versions)
         c_res = dlg.ShowModal()
         if c_res == wx.ID_CANCEL:
             dlg.Destroy()
@@ -78,7 +79,7 @@ class EventController(object):
             if forgeturlcontent is None:
                 return
             #修改添加时间提示
-            apk_urls,apk_times = downobj.get_apk_link_urls(forgeturlcontent)
+            apk_urls, apk_times = downobj.get_apk_link_urls(forgeturlcontent)
             if apk_urls is None:
                 return
             url = forgeturl+apk_urls[0]
@@ -104,7 +105,7 @@ class EventController(object):
             return
         filename = self.guiobj.lc_apk_info.GetItemText(index)
         filepath = self.apkObj.apk_abs_path(filename)
-        md = wx.MessageDialog(None, "will delete local file : %s" %filename, caption="Sure ?", style=wx.OK|wx.CANCEL|wx.CENTRE, pos=wx.DefaultPosition).ShowModal()
+        md = wx.MessageDialog(None, "will delete local file : %s" % filename, caption="Sure ?", style=wx.OK|wx.CANCEL|wx.CENTRE, pos=wx.DefaultPosition).ShowModal()
         if md == 5100:
             self.apkObj.delete_apk(filepath)
             self.refresh_apk_info()
@@ -126,21 +127,21 @@ class EventController(object):
         self.guiobj.lc_apk_info.DeleteAllItems()
 
     def do_install(self,event):
-        #获取要安装apk的绝对路径
-        #2016.12.7 修复因图形中的数据排序与list中的数据排序的不同引起的数据获取错误
+        # 获取要安装apk的绝对路径
+        # 2016.12.7 修复因图形中的数据排序与list中的数据排序的不同引起的数据获取错误
         index = self.guiobj.lc_apk_info.GetFirstSelected()
         filename = self.guiobj.lc_apk_info.GetItemText(index)
         # filename = self.apk_list[index]
         filepath = self.apkObj.apk_abs_path(filename)
         apkPackageName = self.apkObj.get_apk_package_name(filepath)
 
-        #获取被安装apk设备的sno号
+        # 获取被安装apk设备的sno号
         choiseitemid = self.guiobj.lc_device_info.GetFocusedItem()
         if choiseitemid == -1:
             wx.LogMessage("Device_items No Choice Device")
             return
         phonemodel = self.guiobj.lc_device_info.GetItem(choiseitemid, col=1).GetText()
-        #执行安装
+        # 执行安装
         for sno in self.deviceInfo:
             if self.deviceInfo[sno]["phone_model"] == phonemodel:
                 self.pctrObj.install_one_device(sno,filepath,apkPackageName)
@@ -189,14 +190,14 @@ class EventController(object):
                 break
                 #pctrObj.is_has_package(sno,apkPackageName)
 
-    def do_clear_data(self,event):
+    def do_clear_data(self, event):
         index = self.guiobj.lc_device_info.GetFirstSelected()
         if index == -1:
             wx.MessageDialog(self.guiobj, 'NO SELECTION DEVICE', style=wx.OK|wx.CANCEL|wx.CENTRE).ShowModal()
             return
         index = self.guiobj.lc_device_info.GetFirstSelected()
         phonemodel = self.guiobj.lc_device_info.GetItem(index, col=1).GetText()
-        dlg = wx.SingleChoiceDialog(None,'Package','package name',["com.youku.phone","com.sina.weibo","com.houbank.paydayloan"],style=wx.OK|wx.CANCEL|wx.CENTRE)
+        dlg = wx.SingleChoiceDialog(None, 'Package', 'package name', ["com.youku.phone", "com.sina.weibo", "com.houbank.paydayloan"], style=wx.OK | wx.CANCEL | wx.CENTRE)
         c_res = dlg.ShowModal()
         if c_res == wx.ID_CANCEL:
             dlg.Destroy()
@@ -290,7 +291,7 @@ class EventController(object):
             txt =  iptxt_obj.GetValue().encode("utf-8")
             if txt is None or txt == "":
                 return
-            self.dinfoObj.screenrecord(sno,txt)
+            self.thread_leader.run_thread("screenrecord", (sno, txt))
         elif res == wx.ID_CANCEL:
             iptxt_obj.Destroy()
 
@@ -406,16 +407,17 @@ class EventController(object):
                 if pkg is None or pkg == "":
                     return
                 # 2017.07.18 准备使用多线程来处理性能收集
-                self.t = threading.Thread(target=self.__get_performance, args=(sno, time1, pkg))
-                self.t.start()
-                wx.LogMessage("get preforence func threading process is running: {}".format(self.t.is_alive()))
+                # self.t = threading.Thread(target=self.thread_leader.get_performance, args=(sno, time1, pkg))
+                # self.t.start()
+                self.thread_leader.run_thread("performance", (sno, time1, pkg))
+                # wx.LogMessage("get preforence func threading process is running: {}".format(self.t.is_alive()))
                 # t.join() # 参数timeout是一个数值类型，表示超时时间，如果未提供该参数，那么主调线程将一直堵塞到被调线程结束
             elif result == wx.ID_CANCEL:
                 pkg_obj.Destroy()
         elif res == wx.ID_CANCEL:
             iptxt_obj.Destroy()
 
-
+    @deprecated("20170728 change using the gui_thread func")
     def __get_performance(self, sno, time1, pkg):
         apm = AppPerformanceMonitor()
         data = apm.top(sno, time1, pkg)

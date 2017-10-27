@@ -58,7 +58,7 @@ class DownloadApk(object):
     def get_apk_link_urls(self, htmlcontent):
         try:
             # htmlcontent = self.download_html(web_url)
-            soup = BeautifulSoup(htmlcontent, 'html.parser',from_encoding='utf-8')
+            soup = BeautifulSoup(htmlcontent, 'html.parser', from_encoding='utf-8')
             apk_urls = []
             apk_times = []
             urls = soup.find_all('a', href=re.compile(r'.*?\.apk'))
@@ -120,7 +120,7 @@ class DownloadApk(object):
         if not os.path.exists(abs_path):
             os.mkdir(abs_path)
         apk_file_name = url.split('/')[-1][:-4]
-        apk_file_name ="%s_%s.%s"%(apk_file_name, apk_time, "apk")
+        apk_file_name ="%s_%s.%s" % (apk_file_name, apk_time, "apk")
         path_apk = os.path.join(abs_path, apk_file_name)
         if os.path.exists(path_apk):
             wx.LogMessage("the [%s] is existing" % apk_file_name)

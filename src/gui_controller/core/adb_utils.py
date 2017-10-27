@@ -19,10 +19,9 @@ import string
 import subprocess
 import sys
 import time
-
 import wx
-
 import exception
+from src.gui_controller.utils.path_getter import FilePathGetter
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -33,10 +32,11 @@ class AndroidUtils(object):
         self.system = None
         self.find_type = None
         self.command = "adb"
+        self.fp = FilePathGetter()
 
     def get_win_destop_path(self):
         # 通过python内置_winreg方法进行注册表的访问，从而获取桌面路径
-        key = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER,r'Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders')
+        key = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r'Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders')
         return _winreg.QueryValueEx(key, "Desktop")[0]
 
     def judgment_system_type(self):
@@ -108,7 +108,7 @@ class AndroidUtils(object):
 
     # 时间戳
     def timestamp(self):
-        return time.strftime('%Y-%m-%d-%H-%M-%S',time.localtime(time.time()))
+        return time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(time.time()))
 
     def get_device_list(self):
         devices = []
@@ -184,7 +184,7 @@ class AndroidUtils(object):
                 path = PATH(path)
                 if not os.path.isdir(path):
                     os.makedirs(path)
-                self.adb(sno, "pull /data/local/tmp/screenrecord.mp4 %s" %PATH("%s/%s.mp4" % (path, self.timestamp()))).wait()
+                self.adb(sno, "pull /data/local/tmp/screenrecord.mp4 %s" % PATH("%s/%s.mp4" % (path, self.timestamp()))).wait()
                 self.shell(sno, "rm /data/local/tmp/screenrecord.mp4")
                 wx.LogMessage("do srceenrecord successed, and check file on windows desktop")
         else:
@@ -194,25 +194,23 @@ class AndroidUtils(object):
     2017.01.13 @pm 杀死进程同在设置中强制关闭一个程序
                @func get到sno和package，进行命令执行
     """
-    def execute_kill_specified_process(self,sno,specified_package):
-        self.shell(sno, "am force-stop %s"%specified_package)
+    def execute_kill_specified_process(self, sno, specified_package):
+        self.shell(sno, "am force-stop %s" % specified_package)
 
     """
-    2017.01.13 @pm #获取设备上当前应用的权限列表
-                   #Windows下会将结果写入permission.txt文件中，其他系统打印在控制台
+    2017.01.13 @pm # 获取设备上当前应用的权限列表
+                   # Windows下会将结果写入permission.txt文件中，其他系统打印在控制台
     """
     def get_permission_list(self, sno, package_name):
-        PATH = lambda p: os.path.abspath(p)
         permission_list = []
         result_list = self.shell(sno, "dumpsys package %s | findstr android.permission" % package_name).stdout.readlines()
         for permission in result_list:
             permission_list.append(permission.strip())
-        pwd = os.path.join(os.getcwd(), "src\\gui_controller\\core")
-        permission_json_file = file("%s\\permission.json" % pwd)
+        permission_json_file = file(self.fp.get_all_permission_file_path())
         file_content = json.load(permission_json_file)["PermissList"]
         name = "_".join(package_name.split("."))
-        res_path = os.path.join(os.getcwd(), "logs")
-        f = open(PATH("%s\\%s_permission.txt" % (res_path, name)), "w")
+        res_path = self.fp.get_app_performance_result_path("%s_permission.txt" % name)
+        f = open(res_path, "w")
         f.write("package: %s\n\n" % package_name)
         for permission in permission_list:
             for permission_dict in file_content:
@@ -222,7 +220,7 @@ class AndroidUtils(object):
     """
     获取某一个应用的uid
     """
-    # TODO(jayzhen) 记得加一个多设备的兼容和异常
+    # (jayzhen) 记得加一个多设备的兼容和异常 已完成  20170728
     def get_app_uid(self, sno, pkg):
         pid = self.get_app_pid(sno, pkg)
         print pid
@@ -230,4 +228,10 @@ class AndroidUtils(object):
 
         return res.split("\t")[2]
 
-    # TODO(20170721jayzhen) 添加对app的检，是否安装，是否启动
+    # (20170721jayzhen) 添加对app的检查，是否安装，是否启动
+    def is_installed_package(self, sno, package_name):
+        had_package = self.android.shell(sno, 'pm list packages | findstr "%s"' % package_name).stdout.read()
+        if re.search(package_name, had_package):
+            return True
+        else:
+            return False

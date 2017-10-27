@@ -15,7 +15,7 @@
 3.检查S3是否有这三个文件，有则删除，没有就上传本地最新的文件
 
 """
-# TODO(jayzhen) 加一个登录功能 已完成
+# (jayzhen) 加一个登录功能 已完成
 import os
 import json
 import re

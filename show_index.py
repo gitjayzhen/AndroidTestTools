@@ -25,7 +25,7 @@ from src.gui_event.transpond_events import EventController
 class GuiFrame(wx.Frame):
     def __init__(self, parent, id, title):
         # 只有一个关闭按钮，不能改变大小
-        wx.Frame.__init__(self, parent, id, title, pos=(70, 80), size=(1260, 650),
+        wx.Frame.__init__(self, parent, id, title, pos=(70, 80), size=(1260, 570),
                           style=wx.SYSTEM_MENU | wx.CAPTION | wx.CLOSE_BOX)
                           # style=wx.FULLSCREEN_NOSTATUSBAR | wx.DEFAULT_FRAME_STYLE)
         # 窗口的角标
@@ -64,7 +64,7 @@ class GuiFrame(wx.Frame):
 
         # 中间部分显示apk文件目录
         self.lc_apk_info = wx.ListCtrl(self, -1, style=wx.LC_LIST | wx.LC_SORT_ASCENDING)
-        vbox2_apk_info.Add(self.lc_apk_info, 1, wx.EXPAND | wx.ALL, 3)
+        vbox2_apk_info.Add(self.lc_apk_info, 1, wx.EXPAND | wx.ALL, 4)
         self.event_ctrl.refresh_apk_info()
 
         # 最下面部分显示按钮
@@ -119,7 +119,7 @@ class GuiFrame(wx.Frame):
         boss_vbox = wx.BoxSizer(wx.HORIZONTAL)
         log_vbox = wx.BoxSizer(wx.VERTICAL)
 
-        self.log_text_ctrl = wx.TextCtrl(self, id=28, style=wx.TE_MULTILINE, size=(500, 650))
+        self.log_text_ctrl = wx.TextCtrl(self, id=28, style=wx.TE_MULTILINE, size=(500, 570))
         self.Bind(wx.EVT_BUTTON, self.event_ctrl.do_Clear, id=28)
         log_vbox.Add(self.log_text_ctrl, 1, wx.EXPAND | wx.ALL, 3)
         # 将整个gui的日志进行重定向到指定控件里
@@ -132,6 +132,6 @@ class GuiFrame(wx.Frame):
 
 if __name__ == "__main__":
     app = wx.App()
-    s = GuiFrame(None, -1, 'Android Brigade Tools V11.0 By Jayzhen'.decode("utf8"))
+    s = GuiFrame(None, -1, 'Android Brigade Tools V12.0 By Jayzhen'.decode("utf8"))
     s.Show()
     app.MainLoop()
