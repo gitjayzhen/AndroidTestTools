@@ -21,6 +21,7 @@ import sys
 import time
 import wx
 import exception
+import platform
 from src.gui_controller.utils.path_getter import FilePathGetter
 
 reload(sys)
@@ -35,9 +36,17 @@ class AndroidUtils(object):
         self.fp = FilePathGetter()
 
     def get_win_destop_path(self):
-        # 通过python内置_winreg方法进行注册表的访问，从而获取桌面路径
-        key = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r'Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders')
-        return _winreg.QueryValueEx(key, "Desktop")[0]
+        try:
+            # 通过python内置_winreg方法进行注册表的访问，从而获取桌面路径
+            key = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r'Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders')
+            return _winreg.QueryValueEx(key, "Desktop")[0]
+        except Exception, e:
+            usr = os.path.expanduser('~')
+            plat = platform.system()
+            desktop = ''
+            if plat == 'Windows':
+                desktop = r'\Desktop'
+            return usr + desktop
 
     def judgment_system_type(self):
         # 判断系统类型，windows使用findstr，linux使用grep
