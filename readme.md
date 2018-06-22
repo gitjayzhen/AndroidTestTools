@@ -23,7 +23,8 @@ ADB环境变量设置(android sdk)： <br>
      2. path:%ANDROID_HOME%\build-tools\24.0.1;%ANDROID_HOME%\platform-tools;%ANDROID_HOME%\tools; <br>
 
 使用到的adb命令：
-   >1. adb devices  查看连接上电脑的所有手机设备
+```
+    1. adb devices  查看连接上电脑的所有手机设备
     2. adb -s sno shell cat /system/build.prop  通过查看手机系统文件查看设备信息
             ro.build.version.release=4.0.3(android版本
             ro.product.model=S2(手机型号)--
@@ -63,7 +64,7 @@ ADB环境变量设置(android sdk)： <br>
     14. adb shell screenrecord --time-limit %d /data/local/tmp/screenrecord.mp4 录制屏幕
     15. adb shell /system/bin/screencap -p /sdcard/screenshot.png 截取屏幕
     16. adb shell dumpsys package %s | findstr android.permission 查看应用程序所需系统的权限
-
+```
 
 
 # 需求：
